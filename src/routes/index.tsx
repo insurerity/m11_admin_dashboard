@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useMyQueryQuery } from "@/graphql/generated";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { data, error } = useMyQueryQuery();
+  console.log("data", data);
+  console.log("error", error);
   const [count, setCount] = useState(0);
   return (
     <div className="w-full h-screen flex items-center flex-col justify-center gap-y-4">

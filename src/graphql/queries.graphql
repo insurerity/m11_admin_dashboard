@@ -1,0 +1,10 @@
+query MyQuery {
+  listing {
+    price
+    rating
+    title
+    no_of_beds
+    no_of_bathrooms
+    nickname
+  }
+}
