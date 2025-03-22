@@ -1,0 +1,14 @@
+schema:
+  - "https://ccmab-graph-demo-pnpadbgneq-uc.a.run.app/v1/graphql":
+      headers:
+        x-hasura-admin-secret: "JL366P4P9JEmizjIXrU0mcL4FqngMR4968EupH48rNhf7jfpdysielyMVb4cgeTR"
+documents:
+  - "./graphql/*.graphql"
+generates:
+  graphql/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withRefetchFn: true
