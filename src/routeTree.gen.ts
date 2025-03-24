@@ -14,6 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as ProductsImport } from './routes/products'
+import { Route as LogsImport } from './routes/logs'
+import { Route as ListingsImport } from './routes/listings'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
@@ -34,6 +36,18 @@ const SettingsRoute = SettingsImport.update({
 const ProductsRoute = ProductsImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LogsRoute = LogsImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ListingsRoute = ListingsImport.update({
+  id: '/listings',
+  path: '/listings',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,6 +81,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/listings': {
+      id: '/listings'
+      path: '/listings'
+      fullPath: '/listings'
+      preLoaderRoute: typeof ListingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/logs': {
+      id: '/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof LogsImport
+      parentRoute: typeof rootRoute
+    }
     '/products': {
       id: '/products'
       path: '/products'
@@ -96,6 +124,8 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/listings': typeof ListingsRoute
+  '/logs': typeof LogsRoute
   '/products': typeof ProductsRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
@@ -104,6 +134,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/listings': typeof ListingsRoute
+  '/logs': typeof LogsRoute
   '/products': typeof ProductsRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
@@ -113,6 +145,8 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/listings': typeof ListingsRoute
+  '/logs': typeof LogsRoute
   '/products': typeof ProductsRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
@@ -120,16 +154,40 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/products' | '/settings' | '/users'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/logs'
+    | '/products'
+    | '/settings'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products' | '/settings' | '/users'
-  id: '__root__' | '/' | '/about' | '/products' | '/settings' | '/users'
+  to:
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/logs'
+    | '/products'
+    | '/settings'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/listings'
+    | '/logs'
+    | '/products'
+    | '/settings'
+    | '/users'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ListingsRoute: typeof ListingsRoute
+  LogsRoute: typeof LogsRoute
   ProductsRoute: typeof ProductsRoute
   SettingsRoute: typeof SettingsRoute
   UsersRoute: typeof UsersRoute
@@ -138,6 +196,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ListingsRoute: ListingsRoute,
+  LogsRoute: LogsRoute,
   ProductsRoute: ProductsRoute,
   SettingsRoute: SettingsRoute,
   UsersRoute: UsersRoute,
@@ -155,6 +215,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/listings",
+        "/logs",
         "/products",
         "/settings",
         "/users"
@@ -165,6 +227,12 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/listings": {
+      "filePath": "listings.tsx"
+    },
+    "/logs": {
+      "filePath": "logs.tsx"
     },
     "/products": {
       "filePath": "products.tsx"

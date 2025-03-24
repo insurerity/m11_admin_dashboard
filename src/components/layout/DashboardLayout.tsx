@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { BoxIcon, LayoutDashboard, Settings, Users } from "lucide-react";
+import { BoxIcon, LayoutDashboard, Settings, TerminalIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -33,14 +33,14 @@ const navItems: NavItem[] = [
     isActive: true,
   },
   {
-    title: "Products",
-    href: "/products",
+    title: "Listings",
+    href: "/listings",
     icon: BoxIcon,
   },
   {
-    title: "Users",
-    href: "/users",
-    icon: Users,
+    title: "Logs",
+    href: "/logs",
+    icon: TerminalIcon,
   },
   {
     title: "Settings",

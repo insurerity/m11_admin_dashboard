@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  date: { input: any; output: any; }
   numeric: { input: any; output: any; }
   timestamptz: { input: any; output: any; }
   uuid: { input: any; output: any; }
@@ -73,6 +74,19 @@ export enum Cursor_Ordering {
   /** descending ordering of the cursor */
   Desc = 'DESC'
 }
+
+/** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
+export type Date_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['date']['input']>;
+  _gt?: InputMaybe<Scalars['date']['input']>;
+  _gte?: InputMaybe<Scalars['date']['input']>;
+  _in?: InputMaybe<Array<Scalars['date']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['date']['input']>;
+  _lte?: InputMaybe<Scalars['date']['input']>;
+  _neq?: InputMaybe<Scalars['date']['input']>;
+  _nin?: InputMaybe<Array<Scalars['date']['input']>>;
+};
 
 /** columns and relationships of "listing" */
 export type Listing = {
@@ -656,6 +670,311 @@ export type Listing_Variance_Fields = {
   rating?: Maybe<Scalars['Float']['output']>;
 };
 
+/** columns and relationships of "log" */
+export type Log = {
+  __typename?: 'log';
+  check_in_date?: Maybe<Scalars['date']['output']>;
+  check_out_date?: Maybe<Scalars['date']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  listing_id?: Maybe<Scalars['String']['output']>;
+  min_occupancy?: Maybe<Scalars['numeric']['output']>;
+  tags?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "log" */
+export type Log_Aggregate = {
+  __typename?: 'log_aggregate';
+  aggregate?: Maybe<Log_Aggregate_Fields>;
+  nodes: Array<Log>;
+};
+
+/** aggregate fields of "log" */
+export type Log_Aggregate_Fields = {
+  __typename?: 'log_aggregate_fields';
+  avg?: Maybe<Log_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Log_Max_Fields>;
+  min?: Maybe<Log_Min_Fields>;
+  stddev?: Maybe<Log_Stddev_Fields>;
+  stddev_pop?: Maybe<Log_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Log_Stddev_Samp_Fields>;
+  sum?: Maybe<Log_Sum_Fields>;
+  var_pop?: Maybe<Log_Var_Pop_Fields>;
+  var_samp?: Maybe<Log_Var_Samp_Fields>;
+  variance?: Maybe<Log_Variance_Fields>;
+};
+
+
+/** aggregate fields of "log" */
+export type Log_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Log_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Log_Avg_Fields = {
+  __typename?: 'log_avg_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "log". All fields are combined with a logical 'AND'. */
+export type Log_Bool_Exp = {
+  _and?: InputMaybe<Array<Log_Bool_Exp>>;
+  _not?: InputMaybe<Log_Bool_Exp>;
+  _or?: InputMaybe<Array<Log_Bool_Exp>>;
+  check_in_date?: InputMaybe<Date_Comparison_Exp>;
+  check_out_date?: InputMaybe<Date_Comparison_Exp>;
+  city?: InputMaybe<String_Comparison_Exp>;
+  country?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  listing_id?: InputMaybe<String_Comparison_Exp>;
+  min_occupancy?: InputMaybe<Numeric_Comparison_Exp>;
+  tags?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "log" */
+export enum Log_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  LogPkey = 'log_pkey'
+}
+
+/** input type for incrementing numeric columns in table "log" */
+export type Log_Inc_Input = {
+  min_occupancy?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "log" */
+export type Log_Insert_Input = {
+  check_in_date?: InputMaybe<Scalars['date']['input']>;
+  check_out_date?: InputMaybe<Scalars['date']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['String']['input']>;
+  min_occupancy?: InputMaybe<Scalars['numeric']['input']>;
+  tags?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Log_Max_Fields = {
+  __typename?: 'log_max_fields';
+  check_in_date?: Maybe<Scalars['date']['output']>;
+  check_out_date?: Maybe<Scalars['date']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  listing_id?: Maybe<Scalars['String']['output']>;
+  min_occupancy?: Maybe<Scalars['numeric']['output']>;
+  tags?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type Log_Min_Fields = {
+  __typename?: 'log_min_fields';
+  check_in_date?: Maybe<Scalars['date']['output']>;
+  check_out_date?: Maybe<Scalars['date']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  listing_id?: Maybe<Scalars['String']['output']>;
+  min_occupancy?: Maybe<Scalars['numeric']['output']>;
+  tags?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "log" */
+export type Log_Mutation_Response = {
+  __typename?: 'log_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Log>;
+};
+
+/** on_conflict condition type for table "log" */
+export type Log_On_Conflict = {
+  constraint: Log_Constraint;
+  update_columns?: Array<Log_Update_Column>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "log". */
+export type Log_Order_By = {
+  check_in_date?: InputMaybe<Order_By>;
+  check_out_date?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  country?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  listing_id?: InputMaybe<Order_By>;
+  min_occupancy?: InputMaybe<Order_By>;
+  tags?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: log */
+export type Log_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "log" */
+export enum Log_Select_Column {
+  /** column name */
+  CheckInDate = 'check_in_date',
+  /** column name */
+  CheckOutDate = 'check_out_date',
+  /** column name */
+  City = 'city',
+  /** column name */
+  Country = 'country',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListingId = 'listing_id',
+  /** column name */
+  MinOccupancy = 'min_occupancy',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "log" */
+export type Log_Set_Input = {
+  check_in_date?: InputMaybe<Scalars['date']['input']>;
+  check_out_date?: InputMaybe<Scalars['date']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['String']['input']>;
+  min_occupancy?: InputMaybe<Scalars['numeric']['input']>;
+  tags?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Log_Stddev_Fields = {
+  __typename?: 'log_stddev_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Log_Stddev_Pop_Fields = {
+  __typename?: 'log_stddev_pop_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Log_Stddev_Samp_Fields = {
+  __typename?: 'log_stddev_samp_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "log" */
+export type Log_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Log_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Log_Stream_Cursor_Value_Input = {
+  check_in_date?: InputMaybe<Scalars['date']['input']>;
+  check_out_date?: InputMaybe<Scalars['date']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['String']['input']>;
+  min_occupancy?: InputMaybe<Scalars['numeric']['input']>;
+  tags?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Log_Sum_Fields = {
+  __typename?: 'log_sum_fields';
+  min_occupancy?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** update columns of table "log" */
+export enum Log_Update_Column {
+  /** column name */
+  CheckInDate = 'check_in_date',
+  /** column name */
+  CheckOutDate = 'check_out_date',
+  /** column name */
+  City = 'city',
+  /** column name */
+  Country = 'country',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListingId = 'listing_id',
+  /** column name */
+  MinOccupancy = 'min_occupancy',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Log_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Log_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Log_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Log_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Log_Var_Pop_Fields = {
+  __typename?: 'log_var_pop_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Log_Var_Samp_Fields = {
+  __typename?: 'log_var_samp_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Log_Variance_Fields = {
+  __typename?: 'log_variance_fields';
+  min_occupancy?: Maybe<Scalars['Float']['output']>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -667,6 +986,10 @@ export type Mutation_Root = {
   delete_listing_image?: Maybe<Listing_Image_Mutation_Response>;
   /** delete single row from the table: "listing_image" */
   delete_listing_image_by_pk?: Maybe<Listing_Image>;
+  /** delete data from the table: "log" */
+  delete_log?: Maybe<Log_Mutation_Response>;
+  /** delete single row from the table: "log" */
+  delete_log_by_pk?: Maybe<Log>;
   /** insert data into the table: "listing" */
   insert_listing?: Maybe<Listing_Mutation_Response>;
   /** insert data into the table: "listing_image" */
@@ -675,6 +998,10 @@ export type Mutation_Root = {
   insert_listing_image_one?: Maybe<Listing_Image>;
   /** insert a single row into the table: "listing" */
   insert_listing_one?: Maybe<Listing>;
+  /** insert data into the table: "log" */
+  insert_log?: Maybe<Log_Mutation_Response>;
+  /** insert a single row into the table: "log" */
+  insert_log_one?: Maybe<Log>;
   /** update data of the table: "listing" */
   update_listing?: Maybe<Listing_Mutation_Response>;
   /** update single row of the table: "listing" */
@@ -687,6 +1014,12 @@ export type Mutation_Root = {
   update_listing_image_many?: Maybe<Array<Maybe<Listing_Image_Mutation_Response>>>;
   /** update multiples rows of table: "listing" */
   update_listing_many?: Maybe<Array<Maybe<Listing_Mutation_Response>>>;
+  /** update data of the table: "log" */
+  update_log?: Maybe<Log_Mutation_Response>;
+  /** update single row of the table: "log" */
+  update_log_by_pk?: Maybe<Log>;
+  /** update multiples rows of table: "log" */
+  update_log_many?: Maybe<Array<Maybe<Log_Mutation_Response>>>;
 };
 
 
@@ -710,6 +1043,18 @@ export type Mutation_RootDelete_Listing_ImageArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Listing_Image_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LogArgs = {
+  where: Log_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Log_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -739,6 +1084,20 @@ export type Mutation_RootInsert_Listing_Image_OneArgs = {
 export type Mutation_RootInsert_Listing_OneArgs = {
   object: Listing_Insert_Input;
   on_conflict?: InputMaybe<Listing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LogArgs = {
+  objects: Array<Log_Insert_Input>;
+  on_conflict?: InputMaybe<Log_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Log_OneArgs = {
+  object: Log_Insert_Input;
+  on_conflict?: InputMaybe<Log_On_Conflict>;
 };
 
 
@@ -781,6 +1140,28 @@ export type Mutation_RootUpdate_Listing_Image_ManyArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Listing_ManyArgs = {
   updates: Array<Listing_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LogArgs = {
+  _inc?: InputMaybe<Log_Inc_Input>;
+  _set?: InputMaybe<Log_Set_Input>;
+  where: Log_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Log_By_PkArgs = {
+  _inc?: InputMaybe<Log_Inc_Input>;
+  _set?: InputMaybe<Log_Set_Input>;
+  pk_columns: Log_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Log_ManyArgs = {
+  updates: Array<Log_Updates>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -826,6 +1207,12 @@ export type Query_Root = {
   listing_image_aggregate: Listing_Image_Aggregate;
   /** fetch data from the table: "listing_image" using primary key columns */
   listing_image_by_pk?: Maybe<Listing_Image>;
+  /** fetch data from the table: "log" */
+  log: Array<Log>;
+  /** fetch aggregated fields from the table: "log" */
+  log_aggregate: Log_Aggregate;
+  /** fetch data from the table: "log" using primary key columns */
+  log_by_pk?: Maybe<Log>;
 };
 
 
@@ -874,6 +1261,29 @@ export type Query_RootListing_Image_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
+
+export type Query_RootLogArgs = {
+  distinct_on?: InputMaybe<Array<Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Log_Order_By>>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
+
+export type Query_RootLog_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Log_Order_By>>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
+
+export type Query_RootLog_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "listing" */
@@ -892,6 +1302,14 @@ export type Subscription_Root = {
   listing_image_stream: Array<Listing_Image>;
   /** fetch data from the table in a streaming manner: "listing" */
   listing_stream: Array<Listing>;
+  /** fetch data from the table: "log" */
+  log: Array<Log>;
+  /** fetch aggregated fields from the table: "log" */
+  log_aggregate: Log_Aggregate;
+  /** fetch data from the table: "log" using primary key columns */
+  log_by_pk?: Maybe<Log>;
+  /** fetch data from the table in a streaming manner: "log" */
+  log_stream: Array<Log>;
 };
 
 
@@ -954,6 +1372,36 @@ export type Subscription_RootListing_StreamArgs = {
   where?: InputMaybe<Listing_Bool_Exp>;
 };
 
+
+export type Subscription_RootLogArgs = {
+  distinct_on?: InputMaybe<Array<Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Log_Order_By>>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
+
+export type Subscription_RootLog_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Log_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Log_Order_By>>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
+
+export type Subscription_RootLog_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLog_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Log_Stream_Cursor_Input>>;
+  where?: InputMaybe<Log_Bool_Exp>;
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -980,15 +1428,20 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
 
-export type MyQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllListingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyQueryQuery = { __typename?: 'query_root', listing: Array<{ __typename?: 'listing', price: any, rating: any, title: string, no_of_beds: any, no_of_bathrooms: any, nickname: string }> };
+export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
+
+export type AllLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export const MyQueryDocument = gql`
-    query MyQuery {
-  listing {
+export type AllLogsQuery = { __typename?: 'query_root', log: Array<{ __typename?: 'log', city?: string | null, country?: string | null, check_out_date?: any | null, check_in_date?: any | null, created_at: any, listing_id?: string | null, min_occupancy?: any | null, tags?: string | null, type?: string | null, id: any }> };
+
+
+export const AllListingsDocument = gql`
+    query allListings {
+  data: listing {
     price
     rating
     title
@@ -996,40 +1449,96 @@ export const MyQueryDocument = gql`
     no_of_bathrooms
     nickname
   }
+  totalCount: listing_aggregate {
+    aggregate {
+      count
+    }
+  }
 }
     `;
 
 /**
- * __useMyQueryQuery__
+ * __useAllListingsQuery__
  *
- * To run a query within a React component, call `useMyQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllListingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllListingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyQueryQuery({
+ * const { data, loading, error } = useAllListingsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyQueryQuery(baseOptions?: Apollo.QueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
+export function useAllListingsQuery(baseOptions?: Apollo.QueryHookOptions<AllListingsQuery, AllListingsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, options);
+        return Apollo.useQuery<AllListingsQuery, AllListingsQueryVariables>(AllListingsDocument, options);
       }
-export function useMyQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
+export function useAllListingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllListingsQuery, AllListingsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, options);
+          return Apollo.useLazyQuery<AllListingsQuery, AllListingsQueryVariables>(AllListingsDocument, options);
         }
-export function useMyQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MyQueryQuery, MyQueryQueryVariables>) {
+export function useAllListingsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AllListingsQuery, AllListingsQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<MyQueryQuery, MyQueryQueryVariables>(MyQueryDocument, options);
+          return Apollo.useSuspenseQuery<AllListingsQuery, AllListingsQueryVariables>(AllListingsDocument, options);
         }
-export type MyQueryQueryHookResult = ReturnType<typeof useMyQueryQuery>;
-export type MyQueryLazyQueryHookResult = ReturnType<typeof useMyQueryLazyQuery>;
-export type MyQuerySuspenseQueryHookResult = ReturnType<typeof useMyQuerySuspenseQuery>;
-export type MyQueryQueryResult = Apollo.QueryResult<MyQueryQuery, MyQueryQueryVariables>;
-export function refetchMyQueryQuery(variables?: MyQueryQueryVariables) {
-      return { query: MyQueryDocument, variables: variables }
+export type AllListingsQueryHookResult = ReturnType<typeof useAllListingsQuery>;
+export type AllListingsLazyQueryHookResult = ReturnType<typeof useAllListingsLazyQuery>;
+export type AllListingsSuspenseQueryHookResult = ReturnType<typeof useAllListingsSuspenseQuery>;
+export type AllListingsQueryResult = Apollo.QueryResult<AllListingsQuery, AllListingsQueryVariables>;
+export function refetchAllListingsQuery(variables?: AllListingsQueryVariables) {
+      return { query: AllListingsDocument, variables: variables }
+    }
+export const AllLogsDocument = gql`
+    query allLogs {
+  log {
+    city
+    country
+    check_out_date
+    check_in_date
+    created_at
+    listing_id
+    min_occupancy
+    tags
+    type
+    id
+  }
+}
+    `;
+
+/**
+ * __useAllLogsQuery__
+ *
+ * To run a query within a React component, call `useAllLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllLogsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllLogsQuery(baseOptions?: Apollo.QueryHookOptions<AllLogsQuery, AllLogsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllLogsQuery, AllLogsQueryVariables>(AllLogsDocument, options);
+      }
+export function useAllLogsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllLogsQuery, AllLogsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllLogsQuery, AllLogsQueryVariables>(AllLogsDocument, options);
+        }
+export function useAllLogsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AllLogsQuery, AllLogsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<AllLogsQuery, AllLogsQueryVariables>(AllLogsDocument, options);
+        }
+export type AllLogsQueryHookResult = ReturnType<typeof useAllLogsQuery>;
+export type AllLogsLazyQueryHookResult = ReturnType<typeof useAllLogsLazyQuery>;
+export type AllLogsSuspenseQueryHookResult = ReturnType<typeof useAllLogsSuspenseQuery>;
+export type AllLogsQueryResult = Apollo.QueryResult<AllLogsQuery, AllLogsQueryVariables>;
+export function refetchAllLogsQuery(variables?: AllLogsQueryVariables) {
+      return { query: AllLogsDocument, variables: variables }
     }

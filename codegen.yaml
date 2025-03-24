@@ -3,9 +3,9 @@ schema:
       headers:
         x-hasura-admin-secret: "wUcm7KDIf1etF6wgXcxDyiwlncVvNPZEPY2EoJCcqlnI3U66ZcIZd52AFKF2ut4z"
 documents:
-  - "./graphql/*.graphql"
+  - "src/**/*.graphql"
 generates:
-  graphql/generated.ts:
+  src/graphql/generated.ts:
     plugins:
       - "typescript"
       - "typescript-operations"

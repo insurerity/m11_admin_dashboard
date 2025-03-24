@@ -1,10 +1,30 @@
-query MyQuery {
-  listing {
+query allListings {
+  data: listing {
     price
     rating
     title
     no_of_beds
     no_of_bathrooms
     nickname
+  }
+  totalCount: listing_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query allLogs {
+  log {
+    city
+    country
+    check_out_date
+    check_in_date
+    created_at
+    listing_id
+    min_occupancy
+    tags
+    type
+    id
   }
 }
