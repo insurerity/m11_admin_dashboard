@@ -1,4 +1,6 @@
 import ListingDetailsTemplate from "@/modules/listing/templates/ListingDetailsTemplate";
+import { toast } from "sonner";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,25 +10,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Copy, Eye, EyeOff, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { DeleteConfirmationModal } from "@/components/common/DeleteConfirmationModal";
+import { useDeleteListingMutation } from "@/graphql/generated";
 
 export const Route = createFileRoute("/listings/$id")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const [actionDeleteListing, { loading }] = useDeleteListingMutation();
   const { id } = Route.useParams();
   const navigate = Route.useNavigate();
-  const isPublished = true;
+
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  // Reset delete confirmation when dropdown closes
-  const handleDropdownOpenChange = (open: boolean) => {
-    if (!open) {
-      setShowDeleteConfirm(false);
-    }
-  };
 
   function onUpdate() {
     navigate({
@@ -34,10 +33,29 @@ function RouteComponent() {
       search: { id },
     });
   }
-  function handleTogglePublish() {}
-  function onClone() {}
 
-  function handleDelete() {}
+  function handleDelete() {
+    return setShowDeleteConfirm((prev) => !prev);
+  }
+
+  async function onDeleteListing() {
+    actionDeleteListing({
+      variables: {
+        id: id,
+      },
+      onCompleted() {
+        setShowDeleteConfirm(false);
+        toast.success("Listing deleted successfully");
+        navigate({
+          to: `/listings`,
+        });
+      },
+      onError() {
+        setShowDeleteConfirm(false);
+        toast.error("Error deleting listing");
+      },
+    });
+  }
 
   return (
     <div className="w-full px-[32px]">
@@ -51,7 +69,7 @@ function RouteComponent() {
           </p>
         </div>
         <div>
-          <DropdownMenu onOpenChange={handleDropdownOpenChange}>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <MoreVertical size={20} />
@@ -61,26 +79,7 @@ function RouteComponent() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onUpdate()}>
                 <Pencil className="mr-2 h-4 w-4" />
-                <span>Edit Listing</span>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem onClick={() => handleTogglePublish()}>
-                {isPublished ? (
-                  <>
-                    <EyeOff className="mr-2 h-4 w-4" />
-                    <span>Unpublish Listing</span>
-                  </>
-                ) : (
-                  <>
-                    <Eye className="mr-2 h-4 w-4" />
-                    <span>Publish Listing</span>
-                  </>
-                )}
-              </DropdownMenuItem>
-
-              <DropdownMenuItem onClick={() => onClone()}>
-                <Copy className="mr-2 h-4 w-4" />
-                <span>Clone Listing</span>
+                <span>Update Listing</span>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
@@ -107,6 +106,14 @@ function RouteComponent() {
       <div className="w-full mt-[32px]">
         <ListingDetailsTemplate />
       </div>
+
+      <DeleteConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={onDeleteListing}
+        confirmLoading={loading}
+        description="Are you sure you want to delete this listing? This action cannot be undone."
+      />
     </div>
   );
 }

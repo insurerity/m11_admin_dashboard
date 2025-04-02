@@ -7,6 +7,10 @@ type ListingDialogStateTypes = {
     errorMessage?: string;
     setErrorMessage: (msg: string) => void;
   };
+  delete: {
+    showDelete: boolean;
+    setShowDelete: (open: boolean) => void;
+  };
   success: {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -28,6 +32,11 @@ export const ListingDialogStates = create<ListingDialogStateTypes>((set) => ({
     errorMessage: undefined,
     setErrorMessage: (msg: string) =>
       set((state) => ({ error: { ...state.error, errorMessage: msg } })),
+  },
+  delete: {
+    showDelete: false,
+    setShowDelete: (open) =>
+      set((state) => ({ delete: { ...state.delete, showDelete: open } })),
   },
   success: {
     open: false,

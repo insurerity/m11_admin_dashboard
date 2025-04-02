@@ -46,10 +46,16 @@ mutation addListingImages($objects: [listing_image_insert_input!]!) {
 }
 
 mutation updateListingByPk(
-  $id: uuid = ""
+  $id: uuid!
   $_set: listing_set_input = { inquire_now_mail_to: "" }
 ) {
   update_listing_by_pk(pk_columns: { id: $id }, _set: $_set) {
+    id
+  }
+}
+
+mutation deleteListing($id: uuid!) {
+  delete_listing_by_pk(id: $id) {
     id
   }
 }
