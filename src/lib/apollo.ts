@@ -22,17 +22,38 @@ const httpLink = createHttpLink({
   uri: `https://m11-dashing-blaze.hasura.app/v1/graphql`,
 });
 
-const authLink = setContext((_: any, { headers }: { headers: any }) => {
+// const authLink = setContext((_: any, { headers }: { headers:  }) => {
+//   function returnToken() {
+//     const token = localStorage.getItem("userAccess");
+
+//     const tokenInStorage = localStorage.getItem("userAccess");
+//     if (tokenInStorage) {
+//       return {
+//         authorization: `Bearer ${token}`,
+//       };
+//     } else {
+//       return;
+//     }
+//   }
+
+//   return {
+//     headers: {
+//       ...headers,
+//       ...returnToken(),
+//     },
+//   };
+// });
+
+const authLink = setContext((_, { headers }) => {
   function returnToken() {
     const token = localStorage.getItem("userAccess");
 
-    const tokenInStorage = localStorage.getItem("userAccess");
-    if (tokenInStorage) {
+    if (token) {
       return {
         authorization: `Bearer ${token}`,
       };
     } else {
-      return;
+      return {};
     }
   }
 
@@ -76,6 +97,7 @@ const link =
       )
     : httpLink;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createApolloClient(_context?: ResolverContext) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
@@ -85,6 +107,7 @@ export function createApolloClient(_context?: ResolverContext) {
 }
 
 export function initializeApollo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialState: any = null,
   // Pages with Next.js data fetching methods, like `getStaticProps`, can send
   // a custom context which will be used by `SchemaLink` to server render pages

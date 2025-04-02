@@ -44,9 +44,9 @@ export function NewListingForm() {
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
-    // @ts-expect-error - i know what im doing
     defaultValues: {
       ...listing,
+      images: [],
     },
   });
 
