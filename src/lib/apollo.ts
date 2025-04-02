@@ -76,7 +76,7 @@ const link =
       )
     : httpLink;
 
-function createApolloClient(_context?: ResolverContext) {
+export function createApolloClient(_context?: ResolverContext) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link,

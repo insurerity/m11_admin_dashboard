@@ -17,6 +17,8 @@ export const Route = createFileRoute("/listings/$id")({
 });
 
 function RouteComponent() {
+  const { id } = Route.useParams();
+  const navigate = Route.useNavigate();
   const isPublished = true;
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   // Reset delete confirmation when dropdown closes
@@ -26,7 +28,12 @@ function RouteComponent() {
     }
   };
 
-  function onUpdate() {}
+  function onUpdate() {
+    navigate({
+      to: `/listings/new`,
+      search: { id },
+    });
+  }
   function handleTogglePublish() {}
   function onClone() {}
 

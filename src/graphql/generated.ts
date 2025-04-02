@@ -1449,10 +1449,25 @@ export type InsertListingMutationVariables = Exact<{
 
 export type InsertListingMutation = { __typename?: 'mutation_root', insert_listing?: { __typename?: 'listing_mutation_response', returning: Array<{ __typename?: 'listing', id: any, title: string }> } | null };
 
+export type AddListingImagesMutationVariables = Exact<{
+  objects: Array<Listing_Image_Insert_Input> | Listing_Image_Insert_Input;
+}>;
+
+
+export type AddListingImagesMutation = { __typename?: 'mutation_root', insert_listing_image?: { __typename?: 'listing_image_mutation_response', returning: Array<{ __typename?: 'listing_image', url: string, id: any }> } | null };
+
+export type UpdateListingByPkMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  _set?: InputMaybe<Listing_Set_Input>;
+}>;
+
+
+export type UpdateListingByPkMutation = { __typename?: 'mutation_root', update_listing_by_pk?: { __typename?: 'listing', id: any } | null };
+
 export type AllListingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
+export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, id: any, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
 
 export type AllLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1548,12 +1563,83 @@ export function useInsertListingMutation(baseOptions?: Apollo.MutationHookOption
 export type InsertListingMutationHookResult = ReturnType<typeof useInsertListingMutation>;
 export type InsertListingMutationResult = Apollo.MutationResult<InsertListingMutation>;
 export type InsertListingMutationOptions = Apollo.BaseMutationOptions<InsertListingMutation, InsertListingMutationVariables>;
+export const AddListingImagesDocument = gql`
+    mutation addListingImages($objects: [listing_image_insert_input!]!) {
+  insert_listing_image(objects: $objects) {
+    returning {
+      url
+      id
+    }
+  }
+}
+    `;
+export type AddListingImagesMutationFn = Apollo.MutationFunction<AddListingImagesMutation, AddListingImagesMutationVariables>;
+
+/**
+ * __useAddListingImagesMutation__
+ *
+ * To run a mutation, you first call `useAddListingImagesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddListingImagesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addListingImagesMutation, { data, loading, error }] = useAddListingImagesMutation({
+ *   variables: {
+ *      objects: // value for 'objects'
+ *   },
+ * });
+ */
+export function useAddListingImagesMutation(baseOptions?: Apollo.MutationHookOptions<AddListingImagesMutation, AddListingImagesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddListingImagesMutation, AddListingImagesMutationVariables>(AddListingImagesDocument, options);
+      }
+export type AddListingImagesMutationHookResult = ReturnType<typeof useAddListingImagesMutation>;
+export type AddListingImagesMutationResult = Apollo.MutationResult<AddListingImagesMutation>;
+export type AddListingImagesMutationOptions = Apollo.BaseMutationOptions<AddListingImagesMutation, AddListingImagesMutationVariables>;
+export const UpdateListingByPkDocument = gql`
+    mutation updateListingByPk($id: uuid = "", $_set: listing_set_input = {inquire_now_mail_to: ""}) {
+  update_listing_by_pk(pk_columns: {id: $id}, _set: $_set) {
+    id
+  }
+}
+    `;
+export type UpdateListingByPkMutationFn = Apollo.MutationFunction<UpdateListingByPkMutation, UpdateListingByPkMutationVariables>;
+
+/**
+ * __useUpdateListingByPkMutation__
+ *
+ * To run a mutation, you first call `useUpdateListingByPkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateListingByPkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateListingByPkMutation, { data, loading, error }] = useUpdateListingByPkMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      _set: // value for '_set'
+ *   },
+ * });
+ */
+export function useUpdateListingByPkMutation(baseOptions?: Apollo.MutationHookOptions<UpdateListingByPkMutation, UpdateListingByPkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateListingByPkMutation, UpdateListingByPkMutationVariables>(UpdateListingByPkDocument, options);
+      }
+export type UpdateListingByPkMutationHookResult = ReturnType<typeof useUpdateListingByPkMutation>;
+export type UpdateListingByPkMutationResult = Apollo.MutationResult<UpdateListingByPkMutation>;
+export type UpdateListingByPkMutationOptions = Apollo.BaseMutationOptions<UpdateListingByPkMutation, UpdateListingByPkMutationVariables>;
 export const AllListingsDocument = gql`
     query allListings {
   data: listing {
     price
     rating
     title
+    id
     no_of_beds
     no_of_bathrooms
     nickname

@@ -16,48 +16,86 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useInsertListingMutation } from "@/graphql/generated";
+import {
+  ListingByPkQuery,
+  useAddListingImagesMutation,
+  useInsertListingMutation,
+  useUpdateListingByPkMutation,
+} from "@/graphql/generated";
 import { NewListingSchema, NewListingSchemaType } from "../schema";
 import { useListingDialog } from "../hooks";
 import { SuccessDialog } from "./dialogs/listingSuccess";
 import { LoadingSpinner } from "@/components/ui/loading";
+import { uploadToFirebase } from "@/lib/upload";
+import { Route } from "@/routes/listings/new";
 
 export function NewListingForm() {
+  const listing = Route.useLoaderData() as
+    | ListingByPkQuery["listing_by_pk"]
+    | undefined;
+
+  console.log("id", listing);
   const { error, success } = useListingDialog();
   const { setOpen: setOpenError, setErrorMessage } = error;
   const { setOpen, setDetails } = success;
-  const [createListing, { loading }] = useInsertListingMutation();
+  const [actionCreateListing, { loading }] = useInsertListingMutation();
+  const [insertListingImages] = useAddListingImagesMutation();
+  const [actionUpdateListing] = useUpdateListingByPkMutation();
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
+    // @ts-expect-error - i know what im doing
     defaultValues: {
-      title: "",
-      nickname: "",
-      no_of_beds: 1,
-      no_of_bathrooms: 1,
-      no_of_guests: 1,
-      price: 0,
-      rating: undefined,
-      inquire_now_mail_to: "",
-      images: [],
+      ...listing,
     },
   });
 
-  // Handle form submission
   function onSubmit(data: NewListingSchemaType) {
+    if (listing) {
+      return updateListing(data);
+    }
     console.log("Form submitted:", data);
+    const { images, ...rest } = data;
 
-    createListing({
+    actionCreateListing({
       variables: {
-        ...data,
+        ...rest,
       },
-      onCompleted(data) {
-        setOpen(true);
-        setDetails(
-          data?.insert_listing?.returning[0]?.id,
-          data?.insert_listing?.returning[0]?.title as string
-        );
-        console.log("data from inserting listing", data);
+      onCompleted: async (data) => {
+        if (data) {
+          console.log("data from inserting listing", data);
+          const listingId = data?.insert_listing?.returning[0]?.id;
+
+          try {
+            const uploadedFiles = await uploadToFirebase(images);
+            if (uploadedFiles) {
+              await insertListingImages({
+                variables: {
+                  objects: uploadedFiles.map((url) => ({
+                    listing_id: listingId,
+                    image_url: url,
+                  })),
+                },
+              });
+            }
+
+            console.log("uploaded files", uploadedFiles);
+            setOpen(true);
+            setDetails(
+              listingId as string,
+              data?.insert_listing?.returning[0]?.title as string,
+              `Listing created successfully. ${uploadedFiles.length} images uploaded.`
+            );
+            console.log("data from inserting listing", data);
+          } catch {
+            setOpen(true);
+            setDetails(
+              listingId as string,
+              data?.insert_listing?.returning[0]?.title as string,
+              `Listing created successfully. But there was an error uploading images.`
+            );
+          }
+        }
       },
       onError(error) {
         setOpenError(true);
@@ -67,6 +105,16 @@ export function NewListingForm() {
     });
   }
 
+  function updateListing(data: NewListingSchemaType) {
+    actionUpdateListing({
+      variables: {
+        id: listing?.id,
+        _set: {
+          ...data,
+        },
+      },
+    });
+  }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

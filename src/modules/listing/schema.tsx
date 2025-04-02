@@ -7,7 +7,14 @@ const columnHelper = createColumnHelper<AllListingsQuery["data"][0]>();
 export const listingCols = [
   columnHelper.accessor("title", {
     header: "Title",
-    cell: (info) => info.getValue(),
+    cell: (info) => {
+      const id = info.row.original.id; // Assuming `id` exists in the row data
+      return (
+        <a href={`/listings/${id}`} className="text-blue-600 hover:underline">
+          {info.getValue()}
+        </a>
+      );
+    },
   }),
   columnHelper.accessor("price", {
     header: "Price",

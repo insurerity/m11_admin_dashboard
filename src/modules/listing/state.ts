@@ -12,7 +12,12 @@ type ListingDialogStateTypes = {
     setOpen: (open: boolean) => void;
     listingId?: string;
     listingTitle?: string;
-    setDetails: (listingId: string, listingTitle: string) => void;
+    successMessage?: string;
+    setDetails: (
+      listingId: string,
+      listingTitle: string,
+      successMsg: string
+    ) => void;
   };
 };
 
@@ -30,9 +35,14 @@ export const ListingDialogStates = create<ListingDialogStateTypes>((set) => ({
       set((state) => ({ success: { ...state.success, open } })),
     listingId: undefined,
     listingTitle: undefined,
-    setDetails: (listingId: string, listingTitle: string) =>
+    setDetails: (listingId: string, listingTitle: string, successMsg: string) =>
       set((state) => ({
-        success: { ...state.success, listingId, listingTitle },
+        success: {
+          ...state.success,
+          listingId,
+          listingTitle,
+          successMessage: successMsg,
+        },
       })),
   },
 }));

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import ListingTable from "../molecules/ListingTable";
+import { Separator } from "@/components/ui/separator";
 
 export default function ListingTemplate() {
   return (
@@ -20,6 +21,8 @@ export default function ListingTemplate() {
           </Button>
         </div>
       </div>
+
+      <Separator className="my-2" />
 
       <div className="w-full mt-[32px]">
         <ListingTable />

@@ -3,6 +3,7 @@ query allListings {
     price
     rating
     title
+    id
     no_of_beds
     no_of_bathrooms
     nickname

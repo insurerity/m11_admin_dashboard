@@ -1,5 +1,5 @@
+import { DashboardStats } from "@/modules/dashboard/molecules/DashboardStats";
 import { createFileRoute } from "@tanstack/react-router";
-import ListingTemplate from "@/modules/listing/templates/ListingTemplate";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   return (
     <div>
-      <ListingTemplate />
+      <DashboardStats />
     </div>
   );
 }
