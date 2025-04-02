@@ -24,30 +24,70 @@ type NavItem = {
   isActive?: boolean;
 };
 
-// Sample navigation items - replace with your actual routes
+function isActiveRoute(
+  navHref: string,
+  currentPath: string = window.location.pathname
+): boolean {
+  // Special case for root path
+  if (navHref === "/") {
+    return currentPath === "/";
+  }
+  // Check if the current path exactly matches or starts with the navHref plus a slash.
+  return currentPath === navHref || currentPath.startsWith(`${navHref}/`);
+}
+
+const currentPath = window.location.pathname;
+
 const navItems: NavItem[] = [
   {
     title: "Dashboard",
     href: "/",
     icon: LayoutDashboard,
-    // isActive: true,
+    isActive: isActiveRoute("/", currentPath),
   },
   {
     title: "Listings",
     href: "/listings",
     icon: BoxIcon,
+    isActive: isActiveRoute("/listings", currentPath),
   },
   {
     title: "Logs",
     href: "/logs",
     icon: TerminalIcon,
+    isActive: isActiveRoute("/logs", currentPath),
   },
   {
     title: "Settings",
     href: "/settings",
     icon: Settings,
+    isActive: isActiveRoute("/settings", currentPath),
   },
 ];
+
+// const navItems: NavItem[] = [
+//   {
+//     title: "Dashboard",
+//     href: "/",
+//     icon: LayoutDashboard,
+//     // isActive: true,
+//   },
+//   {
+//     title: "Listings",
+//     href: "/listings",
+//     icon: BoxIcon,
+//   },
+//   {
+//     title: "Logs",
+//     href: "/logs",
+//     icon: TerminalIcon,
+//   },
+//   {
+//     title: "Settings",
+//     href: "/settings",
+//     icon: Settings,
+//   },
+// ];
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
