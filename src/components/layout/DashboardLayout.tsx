@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
     title: "Dashboard",
     href: "/",
     icon: LayoutDashboard,
-    isActive: true,
+    // isActive: true,
   },
   {
     title: "Listings",
