@@ -14,7 +14,6 @@ import TableHeaders from "@/components/table/tableHeaders";
 import { useAllListingsQuery } from "@/graphql/generated";
 
 function ListingTable() {
-  const [query, setQuery] = useState<string | undefined>(undefined);
   const [tableSearch, setTableSearch] = useState("");
   const { data, loading: isFetching, error } = useAllListingsQuery();
 
@@ -55,6 +54,9 @@ function ListingTable() {
     },
     globalFilterFn: searchFilter,
   });
+
+  console.log("listing data", data);
+  console.log("fetching listing errored", error);
 
   return (
     <div>

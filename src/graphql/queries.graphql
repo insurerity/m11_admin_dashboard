@@ -28,3 +28,22 @@ query allLogs {
     id
   }
 }
+
+query listingByPk($id: uuid!) {
+  listing_by_pk(id: $id) {
+    created_at
+    id
+    images {
+      id
+      url
+    }
+    inquire_now_mail_to
+    nickname
+    no_of_bathrooms
+    no_of_beds
+    no_of_guests
+    price
+    rating
+    title
+  }
+}

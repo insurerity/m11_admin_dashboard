@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import ListingTable from "../molecules/ListingTable";
 
 export default function ListingTemplate() {
@@ -11,6 +12,12 @@ export default function ListingTemplate() {
           <p className="text-gray-500 font-medium text-base">
             Manage your listings
           </p>
+        </div>
+
+        <div>
+          <Button>
+            <a href="/listings/new">Add New Listing</a>
+          </Button>
         </div>
       </div>
 
