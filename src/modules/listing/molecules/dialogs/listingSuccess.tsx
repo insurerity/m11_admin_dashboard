@@ -18,7 +18,7 @@ interface SuccessDialogProps {
 
 export function SuccessDialog({ onCreateAnother }: SuccessDialogProps) {
   const {
-    success: { open, setOpen, listingId, listingTitle },
+    success: { open, setOpen, listingId, listingTitle, successMessage },
   } = useListingDialog();
   const navigate = useNavigate();
 
@@ -37,11 +37,10 @@ export function SuccessDialog({ onCreateAnother }: SuccessDialogProps) {
             <Check className="h-6 w-6 text-green-600" />
           </div>
           <DialogTitle className="text-center text-xl">
-            Listing Created Successfully
+            {listingTitle}
           </DialogTitle>
           <DialogDescription className="text-center">
-            Your listing &quot;{listingTitle}&quot; has been created and is now
-            live on your store.
+            {successMessage}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">

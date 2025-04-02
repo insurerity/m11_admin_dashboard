@@ -19,6 +19,8 @@ export default function ListingDetailsTemplate() {
     variables: { id: id as string },
   });
 
+  console.log("listing data", data);
+
   const listing = data?.listing_by_pk;
   const formattedDate = new Date(listing?.created_at).toLocaleDateString(
     "en-US",

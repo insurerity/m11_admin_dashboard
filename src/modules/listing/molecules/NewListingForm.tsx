@@ -28,6 +28,7 @@ import { SuccessDialog } from "./dialogs/listingSuccess";
 import { LoadingSpinner } from "@/components/ui/loading";
 import { uploadToFirebase } from "@/lib/upload";
 import { Route } from "@/routes/listings/new";
+import { useState } from "react";
 
 export function NewListingForm() {
   const listing = Route.useLoaderData() as
@@ -36,6 +37,7 @@ export function NewListingForm() {
 
   console.log("id", listing);
   const { error, success } = useListingDialog();
+  const [uploadingFiles, setUploadingFiles] = useState(false);
   const { setOpen: setOpenError, setErrorMessage } = error;
   const { setOpen, setDetails } = success;
   const [actionCreateListing, { loading }] = useInsertListingMutation();
@@ -63,31 +65,33 @@ export function NewListingForm() {
       },
       onCompleted: async (data) => {
         if (data) {
-          console.log("data from inserting listing", data);
           const listingId = data?.insert_listing?.returning[0]?.id;
+
+          setUploadingFiles(true);
 
           try {
             const uploadedFiles = await uploadToFirebase(images);
+
             if (uploadedFiles) {
               await insertListingImages({
                 variables: {
                   objects: uploadedFiles.map((url) => ({
                     listing_id: listingId,
-                    image_url: url,
+                    url,
                   })),
                 },
               });
             }
 
-            console.log("uploaded files", uploadedFiles);
             setOpen(true);
+            setUploadingFiles(false);
             setDetails(
               listingId as string,
               data?.insert_listing?.returning[0]?.title as string,
               `Listing created successfully. ${uploadedFiles.length} images uploaded.`
             );
-            console.log("data from inserting listing", data);
           } catch {
+            setUploadingFiles(false);
             setOpen(true);
             setDetails(
               listingId as string,
@@ -291,7 +295,7 @@ export function NewListingForm() {
 
         <div className="flex flex-row-reverse">
           <Button type="submit" className="w-full md:w-auto" disabled={loading}>
-            {loading ? (
+            {loading || uploadingFiles ? (
               <span className="flex items-center gap-2">
                 <LoadingSpinner />
               </span>
