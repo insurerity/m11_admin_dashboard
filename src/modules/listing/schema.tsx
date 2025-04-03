@@ -61,9 +61,7 @@ export const NewListingSchema = z.object({
   inquire_now_mail_to: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  images: z.array(z.instanceof(File)).min(1, {
-    message: "Please upload at least one image.",
-  }),
+  images: z.array(z.instanceof(File)).optional(),
 });
 
 export type NewListingSchemaType = z.infer<typeof NewListingSchema>;

@@ -25,6 +25,7 @@ export function SuccessDialog({ onCreateAnother }: SuccessDialogProps) {
   const handleViewListing = () => {
     navigate({
       to: `/listings/${listingId}`,
+      reloadDocument: true,
     });
     setOpen(false);
   };

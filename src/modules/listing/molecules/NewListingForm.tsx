@@ -48,10 +48,7 @@ export function NewListingForm() {
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
-    defaultValues: {
-      ...listing,
-      images: [],
-    },
+    defaultValues: listing ? { ...listing, images: undefined } : { images: [] },
   });
 
   function onSubmit(data: NewListingSchemaType) {
@@ -71,34 +68,47 @@ export function NewListingForm() {
 
           setUploadingFiles(true);
 
-          try {
-            const uploadedFiles = await uploadToFirebase(images);
+          if (images && images.length > 0) {
+            try {
+              const uploadedFiles = await uploadToFirebase(images);
 
-            if (uploadedFiles) {
-              await insertListingImages({
-                variables: {
-                  objects: uploadedFiles.map((url) => ({
-                    listing_id: listingId,
-                    url,
-                  })),
-                },
-              });
+              if (uploadedFiles) {
+                await insertListingImages({
+                  variables: {
+                    objects: uploadedFiles.map((url) => ({
+                      listing_id: listingId,
+                      url,
+                    })),
+                  },
+                });
+              }
+
+              setOpen(true);
+              setUploadingFiles(false);
+              setDetails(
+                listingId as string,
+                data?.insert_listing?.returning[0]?.title as string,
+                `Listing created successfully. ${uploadedFiles.length} images uploaded.`
+              );
+            } catch {
+              setUploadingFiles(false);
+              setOpen(true);
+              setDetails(
+                listingId as string,
+                data?.insert_listing?.returning[0]?.title as string,
+                `Listing created successfully. But there was an error uploading images.`
+              );
             }
+          }
 
+          // if no images were uploaded, just open the success dialog
+          if (!images || images.length === 0) {
             setOpen(true);
             setUploadingFiles(false);
             setDetails(
               listingId as string,
               data?.insert_listing?.returning[0]?.title as string,
-              `Listing created successfully. ${uploadedFiles.length} images uploaded.`
-            );
-          } catch {
-            setUploadingFiles(false);
-            setOpen(true);
-            setDetails(
-              listingId as string,
-              data?.insert_listing?.returning[0]?.title as string,
-              `Listing created successfully. But there was an error uploading images.`
+              "Listing created successfully."
             );
           }
         }
@@ -126,43 +136,54 @@ export function NewListingForm() {
           const listingId = data?.update_listing_by_pk?.id;
 
           // initiate images delete if images exist on the listing
-          if (listing?.images) {
+          if (images && images.length > 0 && listing?.images) {
             await actionDeleteListingImages({
-              variables: {
-                _eq: listingId,
-              },
+              variables: { _eq: listingId },
             });
           }
 
           // after deleting existing images, insert new images
-          try {
-            const uploadedFiles = await uploadToFirebase(images);
+          if (images && images.length > 0) {
+            try {
+              const uploadedFiles = await uploadToFirebase(images);
 
-            if (uploadedFiles) {
-              await insertListingImages({
-                variables: {
-                  objects: uploadedFiles.map((url) => ({
-                    listing_id: listingId,
-                    url,
-                  })),
-                },
-              });
+              if (uploadedFiles) {
+                await insertListingImages({
+                  variables: {
+                    objects: uploadedFiles.map((url) => ({
+                      listing_id: listingId,
+                      url,
+                    })),
+                  },
+                });
+              }
+
+              setOpen(true);
+              setUploadingFiles(false);
+              setDetails(
+                listingId as string,
+                data?.update_listing_by_pk?.title as string,
+                `Listing updated successfully. ${uploadedFiles.length} images uploaded.`
+              );
+            } catch {
+              setUploadingFiles(false);
+              setOpen(true);
+              setDetails(
+                listingId as string,
+                data?.update_listing_by_pk?.title as string,
+                `Listing updated successfully. But there was an error uploading images.`
+              );
             }
+          }
 
+          // if no images were uploaded, just open the success dialog
+          if (!images || images.length === 0) {
             setOpen(true);
             setUploadingFiles(false);
             setDetails(
               listingId as string,
               data?.update_listing_by_pk?.title as string,
-              `Listing updated successfully. ${uploadedFiles.length} images uploaded.`
-            );
-          } catch {
-            setUploadingFiles(false);
-            setOpen(true);
-            setDetails(
-              listingId as string,
-              data?.update_listing_by_pk?.title as string,
-              `Listing updated successfully. But there was an error uploading images.`
+              "Listing updated successfully."
             );
           }
         }
@@ -366,7 +387,7 @@ export function NewListingForm() {
 }
 
 interface ImageUploaderProps {
-  value: File[];
+  value: File[] | undefined;
   onChange: (files: File[]) => void;
 }
 
@@ -376,14 +397,18 @@ function ImageUploader({ value, onChange }: ImageUploaderProps) {
       "image/*": [".jpeg", ".jpg", ".png", ".webp"],
     },
     onDrop: (acceptedFiles) => {
-      onChange([...value, ...acceptedFiles]);
+      if (value) {
+        onChange([...value, ...acceptedFiles]);
+      }
     },
   });
 
   const removeImage = (index: number) => {
-    const newFiles = [...value];
-    newFiles.splice(index, 1);
-    onChange(newFiles);
+    if (value) {
+      const newFiles = [...value];
+      newFiles.splice(index, 1);
+      onChange(newFiles);
+    }
   };
 
   return (
@@ -411,9 +436,9 @@ function ImageUploader({ value, onChange }: ImageUploaderProps) {
         </div>
       </div>
 
-      {value.length > 0 && (
+      {value && value?.length > 0 && (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {value.map((file, index) => (
+          {value?.map((file, index) => (
             <Card key={index} className="overflow-hidden">
               <CardContent className="p-2">
                 <div className="relative aspect-square">
