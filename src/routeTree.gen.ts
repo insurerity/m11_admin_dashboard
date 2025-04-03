@@ -10,246 +10,202 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as UsersImport } from "./routes/users";
-import { Route as SettingsImport } from "./routes/settings";
-import { Route as ProductsImport } from "./routes/products";
-import { Route as LogsImport } from "./routes/logs";
-import { Route as AboutImport } from "./routes/about";
-import { Route as IndexImport } from "./routes/index";
-import { Route as ListingsIndexImport } from "./routes/listings/index";
-import { Route as ListingsNewImport } from "./routes/listings/new";
-import { Route as ListingsIdImport } from "./routes/listings/$id";
+import { Route as rootRoute } from './routes/__root'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as LogsImport } from './routes/logs'
+import { Route as LoginImport } from './routes/login'
+import { Route as IndexImport } from './routes/index'
+import { Route as ListingsIndexImport } from './routes/listings/index'
+import { Route as ListingsNewImport } from './routes/listings/new'
+import { Route as ListingsIdImport } from './routes/listings/$id'
 
 // Create/Update Routes
 
-const UsersRoute = UsersImport.update({
-  id: "/users",
-  path: "/users",
-  getParentRoute: () => rootRoute,
-} as any);
-
 const SettingsRoute = SettingsImport.update({
-  id: "/settings",
-  path: "/settings",
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRoute,
-} as any);
-
-const ProductsRoute = ProductsImport.update({
-  id: "/products",
-  path: "/products",
-  getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const LogsRoute = LogsImport.update({
-  id: "/logs",
-  path: "/logs",
+  id: '/logs',
+  path: '/logs',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
-const AboutRoute = AboutImport.update({
-  id: "/about",
-  path: "/about",
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ListingsIndexRoute = ListingsIndexImport.update({
-  id: "/listings/",
-  path: "/listings/",
+  id: '/listings/',
+  path: '/listings/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ListingsNewRoute = ListingsNewImport.update({
-  id: "/listings/new",
-  path: "/listings/new",
+  id: '/listings/new',
+  path: '/listings/new',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const ListingsIdRoute = ListingsIdImport.update({
-  id: "/listings/$id",
-  path: "/listings/$id",
+  id: '/listings/$id',
+  path: '/listings/$id',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/logs": {
-      id: "/logs";
-      path: "/logs";
-      fullPath: "/logs";
-      preLoaderRoute: typeof LogsImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/products": {
-      id: "/products";
-      path: "/products";
-      fullPath: "/products";
-      preLoaderRoute: typeof ProductsImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/settings": {
-      id: "/settings";
-      path: "/settings";
-      fullPath: "/settings";
-      preLoaderRoute: typeof SettingsImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/users": {
-      id: "/users";
-      path: "/users";
-      fullPath: "/users";
-      preLoaderRoute: typeof UsersImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/listings/$id": {
-      id: "/listings/$id";
-      path: "/listings/$id";
-      fullPath: "/listings/$id";
-      preLoaderRoute: typeof ListingsIdImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/listings/new": {
-      id: "/listings/new";
-      path: "/listings/new";
-      fullPath: "/listings/new";
-      preLoaderRoute: typeof ListingsNewImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/listings/": {
-      id: "/listings/";
-      path: "/listings";
-      fullPath: "/listings";
-      preLoaderRoute: typeof ListingsIndexImport;
-      parentRoute: typeof rootRoute;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/logs': {
+      id: '/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof LogsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/listings/$id': {
+      id: '/listings/$id'
+      path: '/listings/$id'
+      fullPath: '/listings/$id'
+      preLoaderRoute: typeof ListingsIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/listings/new': {
+      id: '/listings/new'
+      path: '/listings/new'
+      fullPath: '/listings/new'
+      preLoaderRoute: typeof ListingsNewImport
+      parentRoute: typeof rootRoute
+    }
+    '/listings/': {
+      id: '/listings/'
+      path: '/listings'
+      fullPath: '/listings'
+      preLoaderRoute: typeof ListingsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/logs": typeof LogsRoute;
-  "/products": typeof ProductsRoute;
-  "/settings": typeof SettingsRoute;
-  "/users": typeof UsersRoute;
-  "/listings/$id": typeof ListingsIdRoute;
-  "/listings/new": typeof ListingsNewRoute;
-  "/listings": typeof ListingsIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logs': typeof LogsRoute
+  '/settings': typeof SettingsRoute
+  '/listings/$id': typeof ListingsIdRoute
+  '/listings/new': typeof ListingsNewRoute
+  '/listings': typeof ListingsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/logs": typeof LogsRoute;
-  "/products": typeof ProductsRoute;
-  "/settings": typeof SettingsRoute;
-  "/users": typeof UsersRoute;
-  "/listings/$id": typeof ListingsIdRoute;
-  "/listings/new": typeof ListingsNewRoute;
-  "/listings": typeof ListingsIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logs': typeof LogsRoute
+  '/settings': typeof SettingsRoute
+  '/listings/$id': typeof ListingsIdRoute
+  '/listings/new': typeof ListingsNewRoute
+  '/listings': typeof ListingsIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/logs": typeof LogsRoute;
-  "/products": typeof ProductsRoute;
-  "/settings": typeof SettingsRoute;
-  "/users": typeof UsersRoute;
-  "/listings/$id": typeof ListingsIdRoute;
-  "/listings/new": typeof ListingsNewRoute;
-  "/listings/": typeof ListingsIndexRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logs': typeof LogsRoute
+  '/settings': typeof SettingsRoute
+  '/listings/$id': typeof ListingsIdRoute
+  '/listings/new': typeof ListingsNewRoute
+  '/listings/': typeof ListingsIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/about"
-    | "/logs"
-    | "/products"
-    | "/settings"
-    | "/users"
-    | "/listings/$id"
-    | "/listings/new"
-    | "/listings";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/login'
+    | '/logs'
+    | '/settings'
+    | '/listings/$id'
+    | '/listings/new'
+    | '/listings'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/about"
-    | "/logs"
-    | "/products"
-    | "/settings"
-    | "/users"
-    | "/listings/$id"
-    | "/listings/new"
-    | "/listings";
+    | '/'
+    | '/login'
+    | '/logs'
+    | '/settings'
+    | '/listings/$id'
+    | '/listings/new'
+    | '/listings'
   id:
-    | "__root__"
-    | "/"
-    | "/about"
-    | "/logs"
-    | "/products"
-    | "/settings"
-    | "/users"
-    | "/listings/$id"
-    | "/listings/new"
-    | "/listings/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/logs'
+    | '/settings'
+    | '/listings/$id'
+    | '/listings/new'
+    | '/listings/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  LogsRoute: typeof LogsRoute;
-  ProductsRoute: typeof ProductsRoute;
-  SettingsRoute: typeof SettingsRoute;
-  UsersRoute: typeof UsersRoute;
-  ListingsIdRoute: typeof ListingsIdRoute;
-  ListingsNewRoute: typeof ListingsNewRoute;
-  ListingsIndexRoute: typeof ListingsIndexRoute;
+  IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  LogsRoute: typeof LogsRoute
+  SettingsRoute: typeof SettingsRoute
+  ListingsIdRoute: typeof ListingsIdRoute
+  ListingsNewRoute: typeof ListingsNewRoute
+  ListingsIndexRoute: typeof ListingsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  LoginRoute: LoginRoute,
   LogsRoute: LogsRoute,
-  ProductsRoute: ProductsRoute,
   SettingsRoute: SettingsRoute,
-  UsersRoute: UsersRoute,
   ListingsIdRoute: ListingsIdRoute,
   ListingsNewRoute: ListingsNewRoute,
   ListingsIndexRoute: ListingsIndexRoute,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -258,11 +214,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
+        "/login",
         "/logs",
-        "/products",
         "/settings",
-        "/users",
         "/listings/$id",
         "/listings/new",
         "/listings/"
@@ -271,20 +225,14 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/logs": {
       "filePath": "logs.tsx"
     },
-    "/products": {
-      "filePath": "products.tsx"
-    },
     "/settings": {
       "filePath": "settings.tsx"
-    },
-    "/users": {
-      "filePath": "users.tsx"
     },
     "/listings/$id": {
       "filePath": "listings/$id.tsx"

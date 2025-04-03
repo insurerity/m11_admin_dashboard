@@ -117,4 +117,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .err {
+    @apply text-red-500;
+  }
 }

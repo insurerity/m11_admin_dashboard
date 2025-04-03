@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { EyeOff, Globe, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -24,6 +24,16 @@ import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 
 export const Route = createFileRoute("/listings/$id")({
   component: RouteComponent,
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.loading && !context.auth.user) {
+      throw redirect({
+        to: "/login",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
   loader: async (ctx) => {
     const id = ctx.params?.id;
 
