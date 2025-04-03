@@ -1,12 +1,11 @@
-import { StrictMode } from "react";
+import { StrictMode, useContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
-import { AuthProvider } from "./components/common/AuthProvider";
-import { useAuth } from "./hooks/useAuth";
+import { AuthContext, AuthProvider } from "./components/common/AuthProvider";
 
 // Create a new router instance
 const router = createRouter({
@@ -25,10 +24,14 @@ declare module "@tanstack/react-router" {
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function InnerApp() {
-  const auth = useAuth();
+  // const auth = useAuth();
+  const context = useContext(AuthContext);
 
-  return <RouterProvider router={router} context={{ auth }} />;
+  if (context) {
+    return <RouterProvider router={router} context={{ auth: context }} />;
+  }
 }
 
 // Render the app

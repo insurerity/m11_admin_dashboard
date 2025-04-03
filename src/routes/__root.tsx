@@ -10,6 +10,7 @@ import { useApollo } from "@/lib/apollo";
 import { ApolloProvider } from "@apollo/client/react";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthContextType } from "@/components/common/AuthProvider";
+import app from "@/lib/firebase";
 
 interface RouterWithContext {
   auth: AuthContextType;
@@ -27,6 +28,8 @@ function RootComponent() {
   const client = useApollo();
   const routerState = useRouterState();
   const isLoginPage = routerState.location.href.includes("/login");
+
+  console.log("initialized firebase app", app);
 
   return (
     <React.Fragment>

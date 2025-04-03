@@ -60,6 +60,7 @@ const authLink = setContext(async (_, { headers }) => {
   return {
     headers: {
       ...headers,
+      "x-hasura-role": "user",
       ...returnToken(),
     },
   };
