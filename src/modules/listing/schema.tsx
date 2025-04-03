@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { AllListingsQuery } from "@/graphql/generated";
 import { createColumnHelper } from "@tanstack/react-table";
 import { z } from "zod";
@@ -36,6 +37,24 @@ export const listingCols = [
     header: "Nickname",
     cell: (info) => info.getValue(),
   }),
+  columnHelper.accessor("isProd", {
+    header: "Status",
+    cell: (info) => {
+      const isProd = info.getValue();
+      return isProd ? (
+        <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+          Published
+        </Badge>
+      ) : (
+        <Badge
+          variant="outline"
+          className="text-amber-600 border-amber-300 bg-amber-50 hover:bg-amber-100"
+        >
+          Draft
+        </Badge>
+      );
+    },
+  }),
 ];
 
 export const NewListingSchema = z.object({
@@ -62,6 +81,7 @@ export const NewListingSchema = z.object({
     message: "Please enter a valid email address.",
   }),
   images: z.array(z.instanceof(File)).optional(),
+  isProd: z.boolean().default(false),
 });
 
 export type NewListingSchemaType = z.infer<typeof NewListingSchema>;

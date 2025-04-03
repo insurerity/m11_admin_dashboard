@@ -12,14 +12,13 @@ import {
 import { useState } from "react";
 import ListingDetailsSkeleton from "../molecules/loaders/ListingDetailsSkeleton";
 import ListingDetailsError from "../molecules/errors/ListingDetailsError";
+import { Badge } from "@/components/ui/badge";
 
 export default function ListingDetailsTemplate() {
   const { id } = Route.useParams();
   const { data, loading, error } = useListingByPkQuery({
     variables: { id: id as string },
   });
-
-  console.log("listing data", data);
 
   const listing = data?.listing_by_pk;
   const formattedDate = new Date(listing?.created_at).toLocaleDateString(
@@ -159,6 +158,25 @@ export default function ListingDetailsTemplate() {
               <div>
                 <p className="text-sm text-gray-500">Rating</p>
                 <p className="font-medium">{listing?.rating || "No ratings"}</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg flex items-center gap-2">
+              <div>
+                <p className="text-sm text-gray-500">Status</p>
+                <div>
+                  {listing?.isProd ? (
+                    <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+                      Published
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="text-amber-600 border-amber-300 bg-amber-50 hover:bg-amber-100"
+                    >
+                      Draft
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
           </div>

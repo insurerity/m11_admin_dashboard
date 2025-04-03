@@ -3,6 +3,7 @@ query allListings {
     price
     rating
     title
+    isProd
     id
     no_of_beds
     no_of_bathrooms
@@ -46,5 +47,6 @@ query listingByPk($id: uuid!) {
     price
     rating
     title
+    isProd
   }
 }

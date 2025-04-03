@@ -8,10 +8,9 @@ import { GET_LISTING_BY_PK } from "@/lib/gqlQueries";
 export const Route = createFileRoute("/listings/new")({
   component: RouteComponent,
   loader: async (ctx) => {
-    console.log("search params", ctx.location.search);
     const searchParams = new URLSearchParams(ctx.location.search);
     const id = searchParams.get("id");
-    console.log("id", id);
+
     if (id) {
       const client = createApolloClient();
       const { data } = await client.query({
@@ -21,7 +20,6 @@ export const Route = createFileRoute("/listings/new")({
         },
       });
 
-      console.log("listing data", data);
       return data?.listing_by_pk;
     }
   },

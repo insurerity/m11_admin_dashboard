@@ -10,20 +10,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { EyeOff, Globe, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { DeleteConfirmationModal } from "@/components/common/DeleteConfirmationModal";
-import { useDeleteListingMutation } from "@/graphql/generated";
+import {
+  useDeleteListingMutation,
+  useUpdateListingByPkMutation,
+} from "@/graphql/generated";
+import { createApolloClient } from "@/lib/apollo";
+import { GETT_LISTING_STATUS } from "@/lib/gqlQueries";
+import { ConfirmationModal } from "@/components/common/ConfirmationModal";
 
 export const Route = createFileRoute("/listings/$id")({
   component: RouteComponent,
+  loader: async (ctx) => {
+    const id = ctx.params?.id;
+
+    if (id) {
+      const client = createApolloClient();
+      const { data } = await client.query({
+        query: GETT_LISTING_STATUS,
+        variables: {
+          id,
+        },
+      });
+
+      return data?.listing_by_pk;
+    }
+  },
 });
 
 function RouteComponent() {
   const [actionDeleteListing, { loading }] = useDeleteListingMutation();
+  const [actionPublishListing, { loading: publishLoading }] =
+    useUpdateListingByPkMutation();
   const { id } = Route.useParams();
   const navigate = Route.useNavigate();
+  const status = Route.useLoaderData();
+  const [showPublish, setShowPublish] = useState(false);
+  const isProd = status?.isProd;
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -57,6 +83,33 @@ function RouteComponent() {
     });
   }
 
+  async function onPublish() {
+    actionPublishListing({
+      variables: {
+        id: id,
+        _set: {
+          isProd: !isProd,
+        },
+      },
+      onError(error) {
+        console.log("error", error);
+        toast.error("Error publishing listing");
+        setShowPublish(false);
+      },
+      onCompleted() {
+        setShowPublish(false);
+        toast.success(
+          isProd
+            ? "Listing unpublished successfully"
+            : "Listing published successfully"
+        );
+        navigate({
+          to: `/listings`,
+        });
+      },
+    });
+  }
+
   return (
     <div className="w-full px-[32px]">
       <div className="w-full flex flex-row justify-between items-start pt-[24px] ">
@@ -80,6 +133,15 @@ function RouteComponent() {
               <DropdownMenuItem onClick={() => onUpdate()}>
                 <Pencil className="mr-2 h-4 w-4" />
                 <span>Update Listing</span>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => setShowPublish(true)}>
+                {isProd ? (
+                  <EyeOff className="mr-2 h-4 w-4" />
+                ) : (
+                  <Globe className="mr-2 h-4 w-4" />
+                )}
+                <span>{isProd ? "Unpublish" : "Publish"}</span>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
@@ -113,6 +175,20 @@ function RouteComponent() {
         onConfirm={onDeleteListing}
         confirmLoading={loading}
         description="Are you sure you want to delete this listing? This action cannot be undone."
+      />
+      <ConfirmationModal
+        isOpen={showPublish}
+        onClose={() => setShowPublish(false)}
+        onConfirm={onPublish}
+        confirmLoading={publishLoading}
+        description={
+          isProd
+            ? "Are you sure you want to unpublish this listing?"
+            : "Are you sure you want to publish this listing?"
+        }
+        title={isProd ? "Unpublish Listing" : "Publish Listing"}
+        confirmText={isProd ? "Unpublish" : "Publish"}
+        cancelText="Cancel"
       />
     </div>
   );

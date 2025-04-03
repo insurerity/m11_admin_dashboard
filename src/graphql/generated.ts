@@ -21,6 +21,19 @@ export type Scalars = {
   uuid: { input: any; output: any; }
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -98,6 +111,7 @@ export type Listing = {
   /** An aggregate relationship */
   images_aggregate: Listing_Image_Aggregate;
   inquire_now_mail_to: Scalars['String']['output'];
+  isProd: Scalars['Boolean']['output'];
   nickname: Scalars['String']['output'];
   no_of_bathrooms: Scalars['numeric']['output'];
   no_of_beds: Scalars['numeric']['output'];
@@ -178,6 +192,7 @@ export type Listing_Bool_Exp = {
   images?: InputMaybe<Listing_Image_Bool_Exp>;
   images_aggregate?: InputMaybe<Listing_Image_Aggregate_Bool_Exp>;
   inquire_now_mail_to?: InputMaybe<String_Comparison_Exp>;
+  isProd?: InputMaybe<Boolean_Comparison_Exp>;
   nickname?: InputMaybe<String_Comparison_Exp>;
   no_of_bathrooms?: InputMaybe<Numeric_Comparison_Exp>;
   no_of_beds?: InputMaybe<Numeric_Comparison_Exp>;
@@ -422,6 +437,7 @@ export type Listing_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   images?: InputMaybe<Listing_Image_Arr_Rel_Insert_Input>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  isProd?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
@@ -486,6 +502,7 @@ export type Listing_Order_By = {
   id?: InputMaybe<Order_By>;
   images_aggregate?: InputMaybe<Listing_Image_Aggregate_Order_By>;
   inquire_now_mail_to?: InputMaybe<Order_By>;
+  isProd?: InputMaybe<Order_By>;
   nickname?: InputMaybe<Order_By>;
   no_of_bathrooms?: InputMaybe<Order_By>;
   no_of_beds?: InputMaybe<Order_By>;
@@ -510,6 +527,8 @@ export enum Listing_Select_Column {
   /** column name */
   InquireNowMailTo = 'inquire_now_mail_to',
   /** column name */
+  IsProd = 'isProd',
+  /** column name */
   Nickname = 'nickname',
   /** column name */
   NoOfBathrooms = 'no_of_bathrooms',
@@ -532,6 +551,7 @@ export type Listing_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  isProd?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
@@ -585,6 +605,7 @@ export type Listing_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  isProd?: InputMaybe<Scalars['Boolean']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
@@ -613,6 +634,8 @@ export enum Listing_Update_Column {
   Id = 'id',
   /** column name */
   InquireNowMailTo = 'inquire_now_mail_to',
+  /** column name */
+  IsProd = 'isProd',
   /** column name */
   Nickname = 'nickname',
   /** column name */
@@ -1481,7 +1504,7 @@ export type DeleteListingImagesMutation = { __typename?: 'mutation_root', delete
 export type AllListingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, id: any, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
+export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, isProd: boolean, id: any, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
 
 export type AllLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1493,7 +1516,7 @@ export type ListingByPkQueryVariables = Exact<{
 }>;
 
 
-export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
+export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, isProd: boolean, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
 
 
 export const CreateListingWithImagesDocument = gql`
@@ -1722,6 +1745,7 @@ export const AllListingsDocument = gql`
     price
     rating
     title
+    isProd
     id
     no_of_beds
     no_of_bathrooms
@@ -1837,6 +1861,7 @@ export const ListingByPkDocument = gql`
     price
     rating
     title
+    isProd
   }
 }
     `;

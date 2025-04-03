@@ -30,13 +30,13 @@ import { LoadingSpinner } from "@/components/ui/loading";
 import { uploadToFirebase } from "@/lib/upload";
 import { Route } from "@/routes/listings/new";
 import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 export function NewListingForm() {
   const listing = Route.useLoaderData() as
     | ListingByPkQuery["listing_by_pk"]
     | undefined;
 
-  console.log("id", listing);
   const { error, success } = useListingDialog();
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const { setOpen: setOpenError, setErrorMessage } = error;
@@ -346,6 +346,30 @@ export function NewListingForm() {
                 Email address for inquiries about this listing.
               </FormDescription>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isProd"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">
+                  Publish to Marketplace
+                </FormLabel>
+                <FormDescription>
+                  Toggle on to immediately publish this listing on the guesty
+                  marketplace. Otherwise, it will be saved as a draft.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

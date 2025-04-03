@@ -5,7 +5,7 @@ export const GET_LISTING_BY_PK = gql`
     listing_by_pk(id: $id) {
       id
       title
-
+      isProd
       price
       rating
       no_of_beds
@@ -18,6 +18,13 @@ export const GET_LISTING_BY_PK = gql`
         id
         url
       }
+    }
+  }
+`;
+export const GETT_LISTING_STATUS = gql`
+  query GetListingByPk($id: uuid!) {
+    listing_by_pk(id: $id) {
+      isProd
     }
   }
 `;
