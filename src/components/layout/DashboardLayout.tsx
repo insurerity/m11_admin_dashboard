@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/useAuth";
 
 // This type represents a navigation item in the sidebar
 type NavItem = {
@@ -65,30 +66,6 @@ const navItems: NavItem[] = [
   },
 ];
 
-// const navItems: NavItem[] = [
-//   {
-//     title: "Dashboard",
-//     href: "/",
-//     icon: LayoutDashboard,
-//     // isActive: true,
-//   },
-//   {
-//     title: "Listings",
-//     href: "/listings",
-//     icon: BoxIcon,
-//   },
-//   {
-//     title: "Logs",
-//     href: "/logs",
-//     icon: TerminalIcon,
-//   },
-//   {
-//     title: "Settings",
-//     href: "/settings",
-//     icon: Settings,
-//   },
-// ];
-
 interface DashboardLayoutProps {
   children: React.ReactNode;
   // You can add more props as needed, such as:
@@ -97,6 +74,8 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const auth = useAuth();
+
   return (
     <SidebarProvider>
       {/* Sidebar with inset variant */}
@@ -131,12 +110,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <SidebarMenuButton size="lg">
                 <Avatar className="h-6 w-6">
                   <AvatarImage src="/placeholder.svg" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
+                  <AvatarFallback>M</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-1 flex-col text-left text-sm">
-                  <span className="font-medium">User Name</span>
+                  <span className="font-medium">
+                    {auth?.user?.displayName ?? "M11 Admin"}
+                  </span>
                   <span className="text-xs text-muted-foreground">
-                    user@example.com
+                    {auth?.user?.email}
                   </span>
                 </div>
               </SidebarMenuButton>

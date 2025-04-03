@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { createRootRouteWithContext } from "@tanstack/react-router";
 import {
   Outlet,
@@ -29,8 +28,6 @@ function RootComponent() {
   const routerState = useRouterState();
   const isLoginPage = routerState.location.href.includes("/login");
 
-  console.log("router state", isLoginPage);
-
   return (
     <React.Fragment>
       <ApolloProvider client={client}>
@@ -43,7 +40,6 @@ function RootComponent() {
           <DashboardLayout>
             <Outlet />
             <Toaster />
-            <TanStackRouterDevtools />
           </DashboardLayout>
         )}
       </ApolloProvider>

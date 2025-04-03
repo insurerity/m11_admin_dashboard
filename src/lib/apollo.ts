@@ -1,3 +1,4 @@
+import { AuthContextRef } from "@/components/common/AuthProvider";
 import type { NormalizedCacheObject } from "@apollo/client";
 import {
   ApolloClient,
@@ -44,9 +45,11 @@ const httpLink = createHttpLink({
 //   };
 // });
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
+  const auth = AuthContextRef.current;
+  console.log("auttth ", auth);
   function returnToken() {
-    const token = localStorage.getItem("userAccess");
+    const token = localStorage.getItem("M11_ACCESS_TOKEN");
 
     if (token) {
       return {
