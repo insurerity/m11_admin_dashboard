@@ -1462,7 +1462,7 @@ export type UpdateListingByPkMutationVariables = Exact<{
 }>;
 
 
-export type UpdateListingByPkMutation = { __typename?: 'mutation_root', update_listing_by_pk?: { __typename?: 'listing', id: any } | null };
+export type UpdateListingByPkMutation = { __typename?: 'mutation_root', update_listing_by_pk?: { __typename?: 'listing', id: any, title: string } | null };
 
 export type DeleteListingMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -1470,6 +1470,13 @@ export type DeleteListingMutationVariables = Exact<{
 
 
 export type DeleteListingMutation = { __typename?: 'mutation_root', delete_listing_by_pk?: { __typename?: 'listing', id: any } | null };
+
+export type DeleteListingImagesMutationVariables = Exact<{
+  _eq: Scalars['uuid']['input'];
+}>;
+
+
+export type DeleteListingImagesMutation = { __typename?: 'mutation_root', delete_listing_image?: { __typename?: 'listing_image_mutation_response', returning: Array<{ __typename?: 'listing_image', id: any }> } | null };
 
 export type AllListingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1610,6 +1617,7 @@ export const UpdateListingByPkDocument = gql`
     mutation updateListingByPk($id: uuid!, $_set: listing_set_input = {inquire_now_mail_to: ""}) {
   update_listing_by_pk(pk_columns: {id: $id}, _set: $_set) {
     id
+    title
   }
 }
     `;
@@ -1673,6 +1681,41 @@ export function useDeleteListingMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteListingMutationHookResult = ReturnType<typeof useDeleteListingMutation>;
 export type DeleteListingMutationResult = Apollo.MutationResult<DeleteListingMutation>;
 export type DeleteListingMutationOptions = Apollo.BaseMutationOptions<DeleteListingMutation, DeleteListingMutationVariables>;
+export const DeleteListingImagesDocument = gql`
+    mutation deleteListingImages($_eq: uuid!) {
+  delete_listing_image(where: {listing_id: {_eq: $_eq}}) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export type DeleteListingImagesMutationFn = Apollo.MutationFunction<DeleteListingImagesMutation, DeleteListingImagesMutationVariables>;
+
+/**
+ * __useDeleteListingImagesMutation__
+ *
+ * To run a mutation, you first call `useDeleteListingImagesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteListingImagesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteListingImagesMutation, { data, loading, error }] = useDeleteListingImagesMutation({
+ *   variables: {
+ *      _eq: // value for '_eq'
+ *   },
+ * });
+ */
+export function useDeleteListingImagesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteListingImagesMutation, DeleteListingImagesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteListingImagesMutation, DeleteListingImagesMutationVariables>(DeleteListingImagesDocument, options);
+      }
+export type DeleteListingImagesMutationHookResult = ReturnType<typeof useDeleteListingImagesMutation>;
+export type DeleteListingImagesMutationResult = Apollo.MutationResult<DeleteListingImagesMutation>;
+export type DeleteListingImagesMutationOptions = Apollo.BaseMutationOptions<DeleteListingImagesMutation, DeleteListingImagesMutationVariables>;
 export const AllListingsDocument = gql`
     query allListings {
   data: listing {

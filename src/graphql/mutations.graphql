@@ -51,11 +51,20 @@ mutation updateListingByPk(
 ) {
   update_listing_by_pk(pk_columns: { id: $id }, _set: $_set) {
     id
+    title
   }
 }
 
 mutation deleteListing($id: uuid!) {
   delete_listing_by_pk(id: $id) {
     id
+  }
+}
+
+mutation deleteListingImages($_eq: uuid!) {
+  delete_listing_image(where: { listing_id: { _eq: $_eq } }) {
+    returning {
+      id
+    }
   }
 }

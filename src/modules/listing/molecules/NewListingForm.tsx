@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import {
   ListingByPkQuery,
   useAddListingImagesMutation,
+  useDeleteListingImagesMutation,
   useInsertListingMutation,
   useUpdateListingByPkMutation,
 } from "@/graphql/generated";
@@ -43,6 +44,7 @@ export function NewListingForm() {
   const [actionCreateListing, { loading }] = useInsertListingMutation();
   const [insertListingImages] = useAddListingImagesMutation();
   const [actionUpdateListing] = useUpdateListingByPkMutation();
+  const [actionDeleteListingImages] = useDeleteListingImagesMutation();
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
@@ -56,7 +58,7 @@ export function NewListingForm() {
     if (listing) {
       return updateListing(data);
     }
-    console.log("Form submitted:", data);
+
     const { images, ...rest } = data;
 
     actionCreateListing({
@@ -110,12 +112,64 @@ export function NewListingForm() {
   }
 
   function updateListing(data: NewListingSchemaType) {
+    const { images, ...rest } = data;
     actionUpdateListing({
       variables: {
         id: listing?.id,
         _set: {
-          ...data,
+          ...rest,
         },
+      },
+      onCompleted: async (data) => {
+        if (data) {
+          setUploadingFiles(true);
+          const listingId = data?.update_listing_by_pk?.id;
+
+          // initiate images delete if images exist on the listing
+          if (listing?.images) {
+            await actionDeleteListingImages({
+              variables: {
+                _eq: listingId,
+              },
+            });
+          }
+
+          // after deleting existing images, insert new images
+          try {
+            const uploadedFiles = await uploadToFirebase(images);
+
+            if (uploadedFiles) {
+              await insertListingImages({
+                variables: {
+                  objects: uploadedFiles.map((url) => ({
+                    listing_id: listingId,
+                    url,
+                  })),
+                },
+              });
+            }
+
+            setOpen(true);
+            setUploadingFiles(false);
+            setDetails(
+              listingId as string,
+              data?.update_listing_by_pk?.title as string,
+              `Listing updated successfully. ${uploadedFiles.length} images uploaded.`
+            );
+          } catch {
+            setUploadingFiles(false);
+            setOpen(true);
+            setDetails(
+              listingId as string,
+              data?.update_listing_by_pk?.title as string,
+              `Listing updated successfully. But there was an error uploading images.`
+            );
+          }
+        }
+      },
+      onError() {
+        setOpenError(true);
+        setErrorMessage("Error updating listing. Please try again.");
       },
     });
   }
@@ -296,11 +350,11 @@ export function NewListingForm() {
         <div className="flex flex-row-reverse">
           <Button type="submit" className="w-full md:w-auto" disabled={loading}>
             {loading || uploadingFiles ? (
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 w-full">
                 <LoadingSpinner />
               </span>
             ) : (
-              "Add Listing"
+              <span>{listing ? "Update Listing" : "Create Listing"}</span>
             )}
           </Button>
         </div>
