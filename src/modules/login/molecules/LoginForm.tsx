@@ -33,7 +33,12 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      await signInWithEmailAndPassword(auth, data.email, data.password).then(
+        async (user) => {
+          const accessToken = await user?.user?.getIdToken();
+          localStorage.setItem("M11_ACCESS_TOKEN", accessToken);
+        }
+      );
       toast.success("Logged in successfully", {
         description: `Welcome back, ${data.email}!`,
       });
@@ -114,9 +119,14 @@ export default function LoginForm() {
 
       <div className="text-center">
         <p className="text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <a href="#" className="font-medium text-slate-900 hover:underline">
-            Sign up
+          Any issues?{" "}
+          <a
+            href="https://chat.whatsapp.com/ErfLaqHrAO5LoO0z902u3a"
+            className="font-medium text-slate-900 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contact Insurerity
           </a>
         </p>
       </div>

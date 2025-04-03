@@ -1,6 +1,12 @@
 import type * as React from "react";
-import { BoxIcon, LayoutDashboard, Settings, TerminalIcon } from "lucide-react";
-
+import {
+  BoxIcon,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  TerminalIcon,
+} from "lucide-react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   Sidebar,
   SidebarContent,
@@ -11,11 +17,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarSeparator,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
+import { LoadingSpinner } from "../ui/loading";
 
 // This type represents a navigation item in the sidebar
 type NavItem = {
@@ -74,7 +85,39 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const auth = useAuth();
+  const navigate = useNavigate();
+  const [user, loading, error] = useAuthState(auth);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("M11_ACCESS_TOKEN");
+      // Redirect to login page or home page after logout
+      navigate({
+        to: "/login",
+      });
+    } catch {
+      toast.error("Login failed. Try again later");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  if (!user) {
+    navigate({
+      to: "/login",
+    });
+  }
 
   return (
     <SidebarProvider>
@@ -114,12 +157,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </Avatar>
                 <div className="flex flex-1 flex-col text-left text-sm">
                   <span className="font-medium">
-                    {auth?.user?.displayName ?? "M11 Admin"}
+                    {user?.displayName ?? "M11 Admin"}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {auth?.user?.email}
+                    {user?.email}
                   </span>
                 </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarSeparator className="my-1" />
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={handleLogout}
+                className="text-red-500 hover:text-red-600 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

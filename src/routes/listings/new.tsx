@@ -2,21 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { NewListingForm } from "@/modules/listing/molecules/NewListingForm";
 import { createApolloClient } from "@/lib/apollo";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { GET_LISTING_BY_PK } from "@/lib/gqlQueries";
 
 export const Route = createFileRoute("/listings/new")({
   component: RouteComponent,
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.loading && !context.auth.user) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
+
   loader: async (ctx) => {
     const searchParams = new URLSearchParams(ctx.location.search);
     const id = searchParams.get("id");
