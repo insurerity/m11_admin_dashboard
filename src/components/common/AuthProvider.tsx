@@ -19,7 +19,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("auth state changed called...");
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("auth state changed called...");
+
       //@ts-expect-error - know
       const accessToken = currentUser["accessToken"];
       if (accessToken) {

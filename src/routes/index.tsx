@@ -4,7 +4,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   component: RouteComponent,
   beforeLoad: ({ context, location }) => {
-    console.log("befiore loaddddddddddddd firedddddddddd");
+    console.log("befiore loaddddddddddddd firedddddddddd", context);
     if (!context.auth.loading && !context.auth.user) {
       throw redirect({
         to: "/login",
