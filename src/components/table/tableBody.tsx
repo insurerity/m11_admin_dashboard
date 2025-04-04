@@ -48,12 +48,7 @@ export default function TableBody<T>({
       ) : table.getRowModel().rows.length === 0 ? (
         <tr className="py-[40px] flex flex-col items-center justify-center w-full h-[400px] absolute">
           <td className="flex flex-col items-center justify-center">
-            <img
-              src="/assets/images/empty.svg"
-              width={158}
-              height={112}
-              alt="Empty"
-            />
+            <img src="/images/empty.svg" width={158} height={112} alt="Empty" />
 
             <div className="flex flex-col items-center justify-center text-center space-y-[4px] pt-[16px] max-w-lg">
               <div className="text-base text-gray-900">No results found</div>

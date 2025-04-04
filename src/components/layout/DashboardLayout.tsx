@@ -127,7 +127,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <SidebarHeader className="border-b border-sidebar-border">
           <div className="flex items-center gap-2 pr-4 py-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-              <LayoutDashboard className="h-4 w-4" />
+              <img src="/images/m11_logo_white.png" alt="M11 Collection logo" />
+              {/* <LayoutDashboard className="h-4 w-4" /> */}
             </div>
             <div className="font-semibold ">M11 Admin Dashboard</div>
           </div>
