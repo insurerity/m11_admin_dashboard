@@ -12,6 +12,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import type { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
 import { M11_ACCESS_TOKEN_NAME } from "./utils";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -110,6 +112,7 @@ export function createApolloClient(_context?: ResolverContext) {
           console.error("JWT expired or invalid. Logging out...");
 
           localStorage.removeItem(M11_ACCESS_TOKEN_NAME);
+          signOut(auth);
           window.location.href = "/login";
         }
       }
