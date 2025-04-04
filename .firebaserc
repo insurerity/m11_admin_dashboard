@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "m11-booking"
+  },
+  "targets": {},
+  "etags": {
+    "m11-booking": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
+}
