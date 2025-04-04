@@ -40,7 +40,7 @@ function ListingTable() {
     data: data?.data ?? defaultData,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // manualPagination: true,
+
     pageCount: pageCount ?? -1,
     state: {
       pagination,
@@ -54,9 +54,6 @@ function ListingTable() {
     },
     globalFilterFn: searchFilter,
   });
-
-  console.log("listing data", data);
-  console.log("fetching listing errored", error);
 
   return (
     <div>
