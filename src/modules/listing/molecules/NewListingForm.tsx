@@ -48,7 +48,7 @@ export function NewListingForm() {
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
-    defaultValues: listing ? { ...listing, images: undefined } : { images: [] },
+    defaultValues: listing ? { ...listing, images: [] } : { images: [] },
   });
 
   function onSubmit(data: NewListingSchemaType) {
