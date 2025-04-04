@@ -2,13 +2,16 @@ import type { NormalizedCacheObject } from "@apollo/client";
 import {
   ApolloClient,
   createHttpLink,
+  from,
   InMemoryCache,
   split,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 import type { IncomingMessage, ServerResponse } from "http";
 import { useMemo } from "react";
+import { M11_ACCESS_TOKEN_NAME } from "./utils";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -100,9 +103,25 @@ const link =
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createApolloClient(_context?: ResolverContext) {
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      for (const error of graphQLErrors) {
+        if (error.extensions?.code === "invalid-jwt") {
+          console.error("JWT expired or invalid. Logging out...");
+
+          localStorage.removeItem(M11_ACCESS_TOKEN_NAME);
+          window.location.href = "/login";
+        }
+      }
+    }
+
+    if (networkError) {
+      console.error(`[Network error]: ${networkError}`);
+    }
+  });
   return new ApolloClient({
-    ssrMode: typeof window === "undefined",
-    link,
+    ssrMode: false,
+    link: from([errorLink, link]),
     cache: new InMemoryCache(),
   });
 }
