@@ -15,7 +15,7 @@ import { useAllListingsQuery } from "@/graphql/generated";
 
 function ListingTable() {
   const [tableSearch, setTableSearch] = useState("");
-  const { data, loading: isFetching, error } = useAllListingsQuery();
+  const { data, loading: isFetching } = useAllListingsQuery();
 
   const defaultData = useMemo(() => [], []);
 
