@@ -2,13 +2,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendSignInLinkToEmail,
+} from "firebase/auth";
 // Ensure this points to your Firebase config file
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "@tanstack/react-router";
 import { auth } from "@/lib/firebase";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/ui/loading";
+import { M11_ACCESS_TOKEN_NAME } from "@/lib/utils";
 
 // Define Zod schema for validation
 const loginSchema = z.object({
@@ -22,10 +28,12 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -36,13 +44,19 @@ export default function LoginForm() {
       await signInWithEmailAndPassword(auth, data.email, data.password).then(
         async (user) => {
           const accessToken = await user?.user?.getIdToken();
-          localStorage.setItem("M11_ACCESS_TOKEN", accessToken);
+          localStorage.setItem(M11_ACCESS_TOKEN_NAME, accessToken);
         }
       );
       toast.success("Logged in successfully", {
-        description: `Welcome back, ${data.email}!`,
+        description: () => {
+          return (
+            <span className="text-black font-semibold">
+              Welcome back, {data.email}!
+            </span>
+          );
+        },
       });
-      navigate({ to: "/" });
+      navigate({ to: "/", reloadDocument: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error("Login failed", {
@@ -55,6 +69,42 @@ export default function LoginForm() {
         },
       });
     }
+  };
+
+  const handlePasswordLessAuth = async () => {
+    const redirectUrl = `${window.location.origin}/login-complete`;
+    const values = getValues();
+    const email = values.email;
+
+    if (email.trim().length <= 0) {
+      toast.error("Please provide email to proceed");
+    }
+
+    const isValidEmail = /\S+@\S+\.\S+/.test(email);
+    if (!isValidEmail) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+
+    setLoading(true);
+
+    await sendSignInLinkToEmail(auth, email, {
+      url: redirectUrl,
+      handleCodeInApp: true,
+    })
+      .then(() => {
+        toast.success("Please check your email for a link to sign in");
+        localStorage.setItem("emailForSignIn", email);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        toast.error("Failed to sign in. Please try again later");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    console.log("values", values);
   };
 
   return (
@@ -108,13 +158,24 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full h-12 text-base"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Logging in..." : "Log in"}
-        </Button>
+        <div className="flex flex-col gap-y-2">
+          <Button
+            type="submit"
+            className="w-full h-12 text-base"
+            disabled={isSubmitting || loading}
+          >
+            {isSubmitting ? "Logging in..." : "Log in"}
+          </Button>
+          <Button
+            type="button"
+            variant={"outline"}
+            className="w-full h-12 text-base"
+            disabled={isSubmitting || loading}
+            onClick={handlePasswordLessAuth}
+          >
+            {loading ? <LoadingSpinner /> : "Sign in with Email"}
+          </Button>
+        </div>
       </form>
 
       <div className="text-center">

@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as LogsImport } from './routes/logs'
+import { Route as LoginCompleteImport } from './routes/login-complete'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as ListingsIndexImport } from './routes/listings/index'
@@ -30,6 +31,12 @@ const SettingsRoute = SettingsImport.update({
 const LogsRoute = LogsImport.update({
   id: '/logs',
   path: '/logs',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginCompleteRoute = LoginCompleteImport.update({
+  id: '/login-complete',
+  path: '/login-complete',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/login-complete': {
+      id: '/login-complete'
+      path: '/login-complete'
+      fullPath: '/login-complete'
+      preLoaderRoute: typeof LoginCompleteImport
+      parentRoute: typeof rootRoute
+    }
     '/logs': {
       id: '/logs'
       path: '/logs'
@@ -124,6 +138,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/login-complete': typeof LoginCompleteRoute
   '/logs': typeof LogsRoute
   '/settings': typeof SettingsRoute
   '/listings/$id': typeof ListingsIdRoute
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/login-complete': typeof LoginCompleteRoute
   '/logs': typeof LogsRoute
   '/settings': typeof SettingsRoute
   '/listings/$id': typeof ListingsIdRoute
@@ -145,6 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/login-complete': typeof LoginCompleteRoute
   '/logs': typeof LogsRoute
   '/settings': typeof SettingsRoute
   '/listings/$id': typeof ListingsIdRoute
@@ -157,6 +174,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/login-complete'
     | '/logs'
     | '/settings'
     | '/listings/$id'
@@ -166,6 +184,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/login-complete'
     | '/logs'
     | '/settings'
     | '/listings/$id'
@@ -175,6 +194,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/login-complete'
     | '/logs'
     | '/settings'
     | '/listings/$id'
@@ -186,6 +206,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  LoginCompleteRoute: typeof LoginCompleteRoute
   LogsRoute: typeof LogsRoute
   SettingsRoute: typeof SettingsRoute
   ListingsIdRoute: typeof ListingsIdRoute
@@ -196,6 +217,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  LoginCompleteRoute: LoginCompleteRoute,
   LogsRoute: LogsRoute,
   SettingsRoute: SettingsRoute,
   ListingsIdRoute: ListingsIdRoute,
@@ -215,6 +237,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/login",
+        "/login-complete",
         "/logs",
         "/settings",
         "/listings/$id",
@@ -227,6 +250,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/login-complete": {
+      "filePath": "login-complete.tsx"
     },
     "/logs": {
       "filePath": "logs.tsx"

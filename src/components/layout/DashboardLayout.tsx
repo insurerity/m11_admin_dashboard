@@ -90,9 +90,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const handleLogout = async () => {
     try {
+      toast.loading("Logging out", { id: "signout" });
       await signOut(auth);
       localStorage.removeItem("M11_ACCESS_TOKEN");
-      // Redirect to login page or home page after logout
+      toast.dismiss("signout");
       navigate({
         to: "/login",
       });

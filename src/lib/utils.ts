@@ -30,3 +30,5 @@ export const searchFilter = (
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
+
+export const M11_ACCESS_TOKEN_NAME = "M11_ACCESS_TOKEN";

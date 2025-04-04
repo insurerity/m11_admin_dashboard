@@ -17,11 +17,25 @@ function RootComponent() {
   const client = useApollo();
   const routerState = useRouterState();
   const isLoginPage = routerState.location.href === "/login";
+  const isLoginCompletePage =
+    routerState.location.href === "/login-complete" ||
+    routerState.location.href.includes("/login-complete");
+
+  if (isLoginCompletePage) {
+    return (
+      <React.Fragment>
+        <ApolloProvider client={client}>
+          <Outlet />
+          <Toaster />
+        </ApolloProvider>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
       <ApolloProvider client={client}>
-        {isLoginPage ? (
+        {routerState && isLoginPage ? (
           <>
             <Outlet />
             <Toaster />
