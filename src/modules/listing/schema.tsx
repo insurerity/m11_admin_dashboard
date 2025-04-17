@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { AllListingsQuery } from "@/graphql/generated";
 import { createColumnHelper } from "@tanstack/react-table";
-import { access } from "fs";
 import { z } from "zod";
 
 const columnHelper = createColumnHelper<AllListingsQuery["data"][0]>();
