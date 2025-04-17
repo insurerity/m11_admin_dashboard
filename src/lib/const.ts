@@ -4837,6 +4837,8 @@ export const COUNTRIES_AND_CITIES: {
       "Quebec",
       "Saskatchewan",
       "Yukon Territory",
+      "Tulum"
+      
     ],
     Caribbean: [""],
     Greenland: [
