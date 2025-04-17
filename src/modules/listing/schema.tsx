@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { AllListingsQuery } from "@/graphql/generated";
 import { createColumnHelper } from "@tanstack/react-table";
+import { access } from "fs";
 import { z } from "zod";
 
 const columnHelper = createColumnHelper<AllListingsQuery["data"][0]>();
@@ -61,6 +62,29 @@ export const NewListingSchema = z.object({
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }),
+  summary: z.string().min(10, {
+    message: "Summary must be at least 10 characters.",
+  }).optional(),
+  access: z.string().min(2, {
+    message: "Access must be at least 10 characters.",
+  }).optional(),
+  city: z.string().min(2, {
+    message: "City must be at least 2 characters.", 
+  }),
+  country : z.string().min(2, {
+    message: "Country must be at least 2 characters.",
+  }),
+  interaction_with_guests : z.string().optional(),
+  space: z.string().optional(),
+  transit: z.string().optional(),
+  house_rules: z.string().min(2, {
+    message: "House rules must be at least 2 characters.",
+  }).optional(),
+  neighborhood: z.string().min(2, {
+    message: "Neighborhood must be at least 2 characters.",
+  }).optional(),
+  tags: z.string().optional(),
+  amenities: z.string().optional(),
   nickname: z.string().min(2, {
     message: "Nickname must be at least 2 characters.",
   }),
@@ -77,9 +101,7 @@ export const NewListingSchema = z.object({
     message: "Price must be a positive number.",
   }),
   rating: z.coerce.number().min(0).max(5).optional(),
-  inquire_now_mail_to: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
+  inquire_now_mail_to: z.string().optional(),
   images: z.array(z.instanceof(File)).optional(),
   isProd: z.boolean().default(false),
 });

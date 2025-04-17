@@ -8,7 +8,6 @@ mutation createListingWithImages($objects: [listing_insert_input!]!) {
 }
 
 mutation insertListing(
-  $inquire_now_mail_to: String!
   $nickname: String!
   $no_of_beds: numeric!
   $no_of_bathrooms: numeric!
@@ -16,10 +15,23 @@ mutation insertListing(
   $price: numeric!
   $rating: numeric
   $title: String!
+  $transit: String = ""
+  $tags: jsonb = ""
+  $summary: String = ""
+  $state: String = ""
+  $space: String = ""
+  $notes: String = ""
+  $neighborhood: String = ""
+  $house_rules: String = ""
+  $country: String = ""
+  $city: String = ""
+  $access: String = ""
+  $interaction_with_guests: String = "", 
+  $video: String = "",
+  $inquire_now_mail_to: String = ""
 ) {
   insert_listing(
     objects: {
-      inquire_now_mail_to: $inquire_now_mail_to
       nickname: $nickname
       no_of_beds: $no_of_beds
       no_of_bathrooms: $no_of_bathrooms
@@ -27,6 +39,20 @@ mutation insertListing(
       price: $price
       rating: $rating
       title: $title
+      transit: $transit
+      tags: $tags
+      summary: $summary
+      state: $state
+      space: $space
+      notes: $notes
+      neighborhood: $neighborhood
+      house_rules: $house_rules
+      country: $country
+      city: $city
+      access: $access
+      interaction_with_guests: $interaction_with_guests,
+      video: $video
+      inquire_now_mail_to: $inquire_now_mail_to
     }
   ) {
     returning {

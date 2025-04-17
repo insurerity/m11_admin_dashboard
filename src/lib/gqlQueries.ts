@@ -14,6 +14,22 @@ export const GET_LISTING_BY_PK = gql`
       inquire_now_mail_to
       nickname
       created_at
+      rating
+      title
+      isProd
+      space
+      state
+      summary
+      tags
+      transit
+      updated_at
+      video
+      neighborhood
+      house_rules
+      country
+      city
+      access
+      interaction_with_guests
       images {
         id
         url

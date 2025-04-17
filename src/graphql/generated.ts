@@ -16,6 +16,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   date: { input: any; output: any; }
+  jsonb: { input: any; output: any; }
   numeric: { input: any; output: any; }
   timestamptz: { input: any; output: any; }
   uuid: { input: any; output: any; }
@@ -101,25 +102,66 @@ export type Date_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['date']['input']>>;
 };
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']['input']>;
+  _eq?: InputMaybe<Scalars['jsonb']['input']>;
+  _gt?: InputMaybe<Scalars['jsonb']['input']>;
+  _gte?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']['input']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['jsonb']['input']>;
+  _lte?: InputMaybe<Scalars['jsonb']['input']>;
+  _neq?: InputMaybe<Scalars['jsonb']['input']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+};
+
 /** columns and relationships of "listing" */
 export type Listing = {
   __typename?: 'listing';
+  access?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
+  house_rules?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   /** An array relationship */
   images: Array<Listing_Image>;
   /** An aggregate relationship */
   images_aggregate: Listing_Image_Aggregate;
   inquire_now_mail_to: Scalars['String']['output'];
+  interaction_with_guests?: Maybe<Scalars['String']['output']>;
   isProd: Scalars['Boolean']['output'];
+  neighborhood?: Maybe<Scalars['String']['output']>;
   nickname: Scalars['String']['output'];
   no_of_bathrooms: Scalars['numeric']['output'];
   no_of_beds: Scalars['numeric']['output'];
   no_of_guests: Scalars['numeric']['output'];
+  notes?: Maybe<Scalars['String']['output']>;
   price: Scalars['numeric']['output'];
   rating: Scalars['numeric']['output'];
+  space?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  summary?: Maybe<Scalars['String']['output']>;
+  tags?: Maybe<Scalars['jsonb']['output']>;
   title: Scalars['String']['output'];
+  transit?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['timestamptz']['output'];
+  video?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -140,6 +182,12 @@ export type ListingImages_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Listing_Image_Order_By>>;
   where?: InputMaybe<Listing_Image_Bool_Exp>;
+};
+
+
+/** columns and relationships of "listing" */
+export type ListingTagsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregated selection of "listing" */
@@ -172,6 +220,11 @@ export type Listing_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Listing_Append_Input = {
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** aggregate avg on columns */
 export type Listing_Avg_Fields = {
   __typename?: 'listing_avg_fields';
@@ -187,20 +240,33 @@ export type Listing_Bool_Exp = {
   _and?: InputMaybe<Array<Listing_Bool_Exp>>;
   _not?: InputMaybe<Listing_Bool_Exp>;
   _or?: InputMaybe<Array<Listing_Bool_Exp>>;
+  access?: InputMaybe<String_Comparison_Exp>;
+  city?: InputMaybe<String_Comparison_Exp>;
+  country?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  house_rules?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   images?: InputMaybe<Listing_Image_Bool_Exp>;
   images_aggregate?: InputMaybe<Listing_Image_Aggregate_Bool_Exp>;
   inquire_now_mail_to?: InputMaybe<String_Comparison_Exp>;
+  interaction_with_guests?: InputMaybe<String_Comparison_Exp>;
   isProd?: InputMaybe<Boolean_Comparison_Exp>;
+  neighborhood?: InputMaybe<String_Comparison_Exp>;
   nickname?: InputMaybe<String_Comparison_Exp>;
   no_of_bathrooms?: InputMaybe<Numeric_Comparison_Exp>;
   no_of_beds?: InputMaybe<Numeric_Comparison_Exp>;
   no_of_guests?: InputMaybe<Numeric_Comparison_Exp>;
+  notes?: InputMaybe<String_Comparison_Exp>;
   price?: InputMaybe<Numeric_Comparison_Exp>;
   rating?: InputMaybe<Numeric_Comparison_Exp>;
+  space?: InputMaybe<String_Comparison_Exp>;
+  state?: InputMaybe<String_Comparison_Exp>;
+  summary?: InputMaybe<String_Comparison_Exp>;
+  tags?: InputMaybe<Jsonb_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
+  transit?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  video?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "listing" */
@@ -208,6 +274,21 @@ export enum Listing_Constraint {
   /** unique or primary key constraint on columns "id" */
   ListingPkey = 'listing_pkey'
 }
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Listing_Delete_At_Path_Input = {
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Listing_Delete_Elem_Input = {
+  tags?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Listing_Delete_Key_Input = {
+  tags?: InputMaybe<Scalars['String']['input']>;
+};
 
 /** columns and relationships of "listing_image" */
 export type Listing_Image = {
@@ -433,51 +514,88 @@ export type Listing_Inc_Input = {
 
 /** input type for inserting data into table "listing" */
 export type Listing_Insert_Input = {
+  access?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   images?: InputMaybe<Listing_Image_Arr_Rel_Insert_Input>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  interaction_with_guests?: InputMaybe<Scalars['String']['input']>;
   isProd?: InputMaybe<Scalars['Boolean']['input']>;
+  neighborhood?: InputMaybe<Scalars['String']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
   no_of_guests?: InputMaybe<Scalars['numeric']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   rating?: InputMaybe<Scalars['numeric']['input']>;
+  space?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  transit?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  video?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Listing_Max_Fields = {
   __typename?: 'listing_max_fields';
+  access?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  house_rules?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   inquire_now_mail_to?: Maybe<Scalars['String']['output']>;
+  interaction_with_guests?: Maybe<Scalars['String']['output']>;
+  neighborhood?: Maybe<Scalars['String']['output']>;
   nickname?: Maybe<Scalars['String']['output']>;
   no_of_bathrooms?: Maybe<Scalars['numeric']['output']>;
   no_of_beds?: Maybe<Scalars['numeric']['output']>;
   no_of_guests?: Maybe<Scalars['numeric']['output']>;
+  notes?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
   rating?: Maybe<Scalars['numeric']['output']>;
+  space?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  summary?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  transit?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  video?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Listing_Min_Fields = {
   __typename?: 'listing_min_fields';
+  access?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  country?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  house_rules?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   inquire_now_mail_to?: Maybe<Scalars['String']['output']>;
+  interaction_with_guests?: Maybe<Scalars['String']['output']>;
+  neighborhood?: Maybe<Scalars['String']['output']>;
   nickname?: Maybe<Scalars['String']['output']>;
   no_of_bathrooms?: Maybe<Scalars['numeric']['output']>;
   no_of_beds?: Maybe<Scalars['numeric']['output']>;
   no_of_guests?: Maybe<Scalars['numeric']['output']>;
+  notes?: Maybe<Scalars['String']['output']>;
   price?: Maybe<Scalars['numeric']['output']>;
   rating?: Maybe<Scalars['numeric']['output']>;
+  space?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  summary?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  transit?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  video?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "listing" */
@@ -498,19 +616,32 @@ export type Listing_On_Conflict = {
 
 /** Ordering options when selecting data from "listing". */
 export type Listing_Order_By = {
+  access?: InputMaybe<Order_By>;
+  city?: InputMaybe<Order_By>;
+  country?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  house_rules?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   images_aggregate?: InputMaybe<Listing_Image_Aggregate_Order_By>;
   inquire_now_mail_to?: InputMaybe<Order_By>;
+  interaction_with_guests?: InputMaybe<Order_By>;
   isProd?: InputMaybe<Order_By>;
+  neighborhood?: InputMaybe<Order_By>;
   nickname?: InputMaybe<Order_By>;
   no_of_bathrooms?: InputMaybe<Order_By>;
   no_of_beds?: InputMaybe<Order_By>;
   no_of_guests?: InputMaybe<Order_By>;
+  notes?: InputMaybe<Order_By>;
   price?: InputMaybe<Order_By>;
   rating?: InputMaybe<Order_By>;
+  space?: InputMaybe<Order_By>;
+  state?: InputMaybe<Order_By>;
+  summary?: InputMaybe<Order_By>;
+  tags?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
+  transit?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+  video?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: listing */
@@ -518,16 +649,33 @@ export type Listing_Pk_Columns_Input = {
   id: Scalars['uuid']['input'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Listing_Prepend_Input = {
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** select columns of table "listing" */
 export enum Listing_Select_Column {
   /** column name */
+  Access = 'access',
+  /** column name */
+  City = 'city',
+  /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  HouseRules = 'house_rules',
   /** column name */
   Id = 'id',
   /** column name */
   InquireNowMailTo = 'inquire_now_mail_to',
   /** column name */
+  InteractionWithGuests = 'interaction_with_guests',
+  /** column name */
   IsProd = 'isProd',
+  /** column name */
+  Neighborhood = 'neighborhood',
   /** column name */
   Nickname = 'nickname',
   /** column name */
@@ -537,29 +685,56 @@ export enum Listing_Select_Column {
   /** column name */
   NoOfGuests = 'no_of_guests',
   /** column name */
+  Notes = 'notes',
+  /** column name */
   Price = 'price',
   /** column name */
   Rating = 'rating',
   /** column name */
+  Space = 'space',
+  /** column name */
+  State = 'state',
+  /** column name */
+  Summary = 'summary',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at'
+  Transit = 'transit',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Video = 'video'
 }
 
 /** input type for updating data in table "listing" */
 export type Listing_Set_Input = {
+  access?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  interaction_with_guests?: InputMaybe<Scalars['String']['input']>;
   isProd?: InputMaybe<Scalars['Boolean']['input']>;
+  neighborhood?: InputMaybe<Scalars['String']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
   no_of_guests?: InputMaybe<Scalars['numeric']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   rating?: InputMaybe<Scalars['numeric']['input']>;
+  space?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  transit?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  video?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
@@ -602,18 +777,31 @@ export type Listing_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Listing_Stream_Cursor_Value_Input = {
+  access?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  interaction_with_guests?: InputMaybe<Scalars['String']['input']>;
   isProd?: InputMaybe<Scalars['Boolean']['input']>;
+  neighborhood?: InputMaybe<Scalars['String']['input']>;
   nickname?: InputMaybe<Scalars['String']['input']>;
   no_of_bathrooms?: InputMaybe<Scalars['numeric']['input']>;
   no_of_beds?: InputMaybe<Scalars['numeric']['input']>;
   no_of_guests?: InputMaybe<Scalars['numeric']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['numeric']['input']>;
   rating?: InputMaybe<Scalars['numeric']['input']>;
+  space?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+  transit?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  video?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
@@ -629,13 +817,25 @@ export type Listing_Sum_Fields = {
 /** update columns of table "listing" */
 export enum Listing_Update_Column {
   /** column name */
+  Access = 'access',
+  /** column name */
+  City = 'city',
+  /** column name */
+  Country = 'country',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  HouseRules = 'house_rules',
   /** column name */
   Id = 'id',
   /** column name */
   InquireNowMailTo = 'inquire_now_mail_to',
   /** column name */
+  InteractionWithGuests = 'interaction_with_guests',
+  /** column name */
   IsProd = 'isProd',
+  /** column name */
+  Neighborhood = 'neighborhood',
   /** column name */
   Nickname = 'nickname',
   /** column name */
@@ -645,18 +845,42 @@ export enum Listing_Update_Column {
   /** column name */
   NoOfGuests = 'no_of_guests',
   /** column name */
+  Notes = 'notes',
+  /** column name */
   Price = 'price',
   /** column name */
   Rating = 'rating',
   /** column name */
+  Space = 'space',
+  /** column name */
+  State = 'state',
+  /** column name */
+  Summary = 'summary',
+  /** column name */
+  Tags = 'tags',
+  /** column name */
   Title = 'title',
   /** column name */
-  UpdatedAt = 'updated_at'
+  Transit = 'transit',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Video = 'video'
 }
 
 export type Listing_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Listing_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Listing_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Listing_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Listing_Delete_Key_Input>;
   /** increments the numeric columns with given value of the filtered values */
   _inc?: InputMaybe<Listing_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Listing_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Listing_Set_Input>;
   /** filter the rows which have to be updated */
@@ -1013,6 +1237,10 @@ export type Mutation_Root = {
   delete_log?: Maybe<Log_Mutation_Response>;
   /** delete single row from the table: "log" */
   delete_log_by_pk?: Maybe<Log>;
+  /** delete data from the table: "review" */
+  delete_review?: Maybe<Review_Mutation_Response>;
+  /** delete single row from the table: "review" */
+  delete_review_by_pk?: Maybe<Review>;
   /** insert data into the table: "listing" */
   insert_listing?: Maybe<Listing_Mutation_Response>;
   /** insert data into the table: "listing_image" */
@@ -1025,6 +1253,10 @@ export type Mutation_Root = {
   insert_log?: Maybe<Log_Mutation_Response>;
   /** insert a single row into the table: "log" */
   insert_log_one?: Maybe<Log>;
+  /** insert data into the table: "review" */
+  insert_review?: Maybe<Review_Mutation_Response>;
+  /** insert a single row into the table: "review" */
+  insert_review_one?: Maybe<Review>;
   /** update data of the table: "listing" */
   update_listing?: Maybe<Listing_Mutation_Response>;
   /** update single row of the table: "listing" */
@@ -1043,6 +1275,12 @@ export type Mutation_Root = {
   update_log_by_pk?: Maybe<Log>;
   /** update multiples rows of table: "log" */
   update_log_many?: Maybe<Array<Maybe<Log_Mutation_Response>>>;
+  /** update data of the table: "review" */
+  update_review?: Maybe<Review_Mutation_Response>;
+  /** update single row of the table: "review" */
+  update_review_by_pk?: Maybe<Review>;
+  /** update multiples rows of table: "review" */
+  update_review_many?: Maybe<Array<Maybe<Review_Mutation_Response>>>;
 };
 
 
@@ -1078,6 +1316,18 @@ export type Mutation_RootDelete_LogArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Log_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ReviewArgs = {
+  where: Review_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Review_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -1125,8 +1375,27 @@ export type Mutation_RootInsert_Log_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_ReviewArgs = {
+  objects: Array<Review_Insert_Input>;
+  on_conflict?: InputMaybe<Review_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Review_OneArgs = {
+  object: Review_Insert_Input;
+  on_conflict?: InputMaybe<Review_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_ListingArgs = {
+  _append?: InputMaybe<Listing_Append_Input>;
+  _delete_at_path?: InputMaybe<Listing_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Listing_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Listing_Delete_Key_Input>;
   _inc?: InputMaybe<Listing_Inc_Input>;
+  _prepend?: InputMaybe<Listing_Prepend_Input>;
   _set?: InputMaybe<Listing_Set_Input>;
   where: Listing_Bool_Exp;
 };
@@ -1134,7 +1403,12 @@ export type Mutation_RootUpdate_ListingArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Listing_By_PkArgs = {
+  _append?: InputMaybe<Listing_Append_Input>;
+  _delete_at_path?: InputMaybe<Listing_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Listing_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Listing_Delete_Key_Input>;
   _inc?: InputMaybe<Listing_Inc_Input>;
+  _prepend?: InputMaybe<Listing_Prepend_Input>;
   _set?: InputMaybe<Listing_Set_Input>;
   pk_columns: Listing_Pk_Columns_Input;
 };
@@ -1187,6 +1461,28 @@ export type Mutation_RootUpdate_Log_ManyArgs = {
   updates: Array<Log_Updates>;
 };
 
+
+/** mutation root */
+export type Mutation_RootUpdate_ReviewArgs = {
+  _inc?: InputMaybe<Review_Inc_Input>;
+  _set?: InputMaybe<Review_Set_Input>;
+  where: Review_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Review_By_PkArgs = {
+  _inc?: InputMaybe<Review_Inc_Input>;
+  _set?: InputMaybe<Review_Set_Input>;
+  pk_columns: Review_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Review_ManyArgs = {
+  updates: Array<Review_Updates>;
+};
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['numeric']['input']>;
@@ -1236,6 +1532,12 @@ export type Query_Root = {
   log_aggregate: Log_Aggregate;
   /** fetch data from the table: "log" using primary key columns */
   log_by_pk?: Maybe<Log>;
+  /** fetch data from the table: "review" */
+  review: Array<Review>;
+  /** fetch aggregated fields from the table: "review" */
+  review_aggregate: Review_Aggregate;
+  /** fetch data from the table: "review" using primary key columns */
+  review_by_pk?: Maybe<Review>;
 };
 
 
@@ -1307,6 +1609,274 @@ export type Query_RootLog_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
+
+export type Query_RootReviewArgs = {
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
+
+export type Query_RootReview_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
+
+export type Query_RootReview_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+/** columns and relationships of "review" */
+export type Review = {
+  __typename?: 'review';
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  listing_id: Scalars['uuid']['output'];
+  rating: Scalars['numeric']['output'];
+  review: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "review" */
+export type Review_Aggregate = {
+  __typename?: 'review_aggregate';
+  aggregate?: Maybe<Review_Aggregate_Fields>;
+  nodes: Array<Review>;
+};
+
+/** aggregate fields of "review" */
+export type Review_Aggregate_Fields = {
+  __typename?: 'review_aggregate_fields';
+  avg?: Maybe<Review_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Review_Max_Fields>;
+  min?: Maybe<Review_Min_Fields>;
+  stddev?: Maybe<Review_Stddev_Fields>;
+  stddev_pop?: Maybe<Review_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Review_Stddev_Samp_Fields>;
+  sum?: Maybe<Review_Sum_Fields>;
+  var_pop?: Maybe<Review_Var_Pop_Fields>;
+  var_samp?: Maybe<Review_Var_Samp_Fields>;
+  variance?: Maybe<Review_Variance_Fields>;
+};
+
+
+/** aggregate fields of "review" */
+export type Review_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Review_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Review_Avg_Fields = {
+  __typename?: 'review_avg_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "review". All fields are combined with a logical 'AND'. */
+export type Review_Bool_Exp = {
+  _and?: InputMaybe<Array<Review_Bool_Exp>>;
+  _not?: InputMaybe<Review_Bool_Exp>;
+  _or?: InputMaybe<Array<Review_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  listing_id?: InputMaybe<Uuid_Comparison_Exp>;
+  rating?: InputMaybe<Numeric_Comparison_Exp>;
+  review?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "review" */
+export enum Review_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  ReviewPkey = 'review_pkey'
+}
+
+/** input type for incrementing numeric columns in table "review" */
+export type Review_Inc_Input = {
+  rating?: InputMaybe<Scalars['numeric']['input']>;
+};
+
+/** input type for inserting data into table "review" */
+export type Review_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['uuid']['input']>;
+  rating?: InputMaybe<Scalars['numeric']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Review_Max_Fields = {
+  __typename?: 'review_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  listing_id?: Maybe<Scalars['uuid']['output']>;
+  rating?: Maybe<Scalars['numeric']['output']>;
+  review?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type Review_Min_Fields = {
+  __typename?: 'review_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  listing_id?: Maybe<Scalars['uuid']['output']>;
+  rating?: Maybe<Scalars['numeric']['output']>;
+  review?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "review" */
+export type Review_Mutation_Response = {
+  __typename?: 'review_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Review>;
+};
+
+/** on_conflict condition type for table "review" */
+export type Review_On_Conflict = {
+  constraint: Review_Constraint;
+  update_columns?: Array<Review_Update_Column>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "review". */
+export type Review_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  listing_id?: InputMaybe<Order_By>;
+  rating?: InputMaybe<Order_By>;
+  review?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: review */
+export type Review_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "review" */
+export enum Review_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListingId = 'listing_id',
+  /** column name */
+  Rating = 'rating',
+  /** column name */
+  Review = 'review',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "review" */
+export type Review_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['uuid']['input']>;
+  rating?: InputMaybe<Scalars['numeric']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Review_Stddev_Fields = {
+  __typename?: 'review_stddev_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Review_Stddev_Pop_Fields = {
+  __typename?: 'review_stddev_pop_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Review_Stddev_Samp_Fields = {
+  __typename?: 'review_stddev_samp_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "review" */
+export type Review_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Review_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Review_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  listing_id?: InputMaybe<Scalars['uuid']['input']>;
+  rating?: InputMaybe<Scalars['numeric']['input']>;
+  review?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Review_Sum_Fields = {
+  __typename?: 'review_sum_fields';
+  rating?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** update columns of table "review" */
+export enum Review_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListingId = 'listing_id',
+  /** column name */
+  Rating = 'rating',
+  /** column name */
+  Review = 'review',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Review_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Review_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Review_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Review_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Review_Var_Pop_Fields = {
+  __typename?: 'review_var_pop_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Review_Var_Samp_Fields = {
+  __typename?: 'review_var_samp_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Review_Variance_Fields = {
+  __typename?: 'review_variance_fields';
+  rating?: Maybe<Scalars['Float']['output']>;
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "listing" */
@@ -1333,6 +1903,14 @@ export type Subscription_Root = {
   log_by_pk?: Maybe<Log>;
   /** fetch data from the table in a streaming manner: "log" */
   log_stream: Array<Log>;
+  /** fetch data from the table: "review" */
+  review: Array<Review>;
+  /** fetch aggregated fields from the table: "review" */
+  review_aggregate: Review_Aggregate;
+  /** fetch data from the table: "review" using primary key columns */
+  review_by_pk?: Maybe<Review>;
+  /** fetch data from the table in a streaming manner: "review" */
+  review_stream: Array<Review>;
 };
 
 
@@ -1425,6 +2003,36 @@ export type Subscription_RootLog_StreamArgs = {
   where?: InputMaybe<Log_Bool_Exp>;
 };
 
+
+export type Subscription_RootReviewArgs = {
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
+
+export type Subscription_RootReview_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
+
+export type Subscription_RootReview_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootReview_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Review_Stream_Cursor_Input>>;
+  where?: InputMaybe<Review_Bool_Exp>;
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -1459,7 +2067,6 @@ export type CreateListingWithImagesMutationVariables = Exact<{
 export type CreateListingWithImagesMutation = { __typename?: 'mutation_root', insert_listing?: { __typename?: 'listing_mutation_response', returning: Array<{ __typename?: 'listing', id: any, created_at: any }> } | null };
 
 export type InsertListingMutationVariables = Exact<{
-  inquire_now_mail_to: Scalars['String']['input'];
   nickname: Scalars['String']['input'];
   no_of_beds: Scalars['numeric']['input'];
   no_of_bathrooms: Scalars['numeric']['input'];
@@ -1467,6 +2074,20 @@ export type InsertListingMutationVariables = Exact<{
   price: Scalars['numeric']['input'];
   rating?: InputMaybe<Scalars['numeric']['input']>;
   title: Scalars['String']['input'];
+  transit?: InputMaybe<Scalars['String']['input']>;
+  tags?: InputMaybe<Scalars['jsonb']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  space?: InputMaybe<Scalars['String']['input']>;
+  notes?: InputMaybe<Scalars['String']['input']>;
+  neighborhood?: InputMaybe<Scalars['String']['input']>;
+  house_rules?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  access?: InputMaybe<Scalars['String']['input']>;
+  interaction_with_guests?: InputMaybe<Scalars['String']['input']>;
+  video?: InputMaybe<Scalars['String']['input']>;
+  inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -1516,7 +2137,7 @@ export type ListingByPkQueryVariables = Exact<{
 }>;
 
 
-export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, isProd: boolean, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
+export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, isProd: boolean, space?: string | null, state?: string | null, summary?: string | null, tags?: any | null, transit?: string | null, updated_at: any, video?: string | null, neighborhood?: string | null, house_rules?: string | null, country?: string | null, city?: string | null, access?: string | null, interaction_with_guests?: string | null, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
 
 
 export const CreateListingWithImagesDocument = gql`
@@ -1556,9 +2177,9 @@ export type CreateListingWithImagesMutationHookResult = ReturnType<typeof useCre
 export type CreateListingWithImagesMutationResult = Apollo.MutationResult<CreateListingWithImagesMutation>;
 export type CreateListingWithImagesMutationOptions = Apollo.BaseMutationOptions<CreateListingWithImagesMutation, CreateListingWithImagesMutationVariables>;
 export const InsertListingDocument = gql`
-    mutation insertListing($inquire_now_mail_to: String!, $nickname: String!, $no_of_beds: numeric!, $no_of_bathrooms: numeric!, $no_of_guests: numeric!, $price: numeric!, $rating: numeric, $title: String!) {
+    mutation insertListing($nickname: String!, $no_of_beds: numeric!, $no_of_bathrooms: numeric!, $no_of_guests: numeric!, $price: numeric!, $rating: numeric, $title: String!, $transit: String = "", $tags: jsonb = "", $summary: String = "", $state: String = "", $space: String = "", $notes: String = "", $neighborhood: String = "", $house_rules: String = "", $country: String = "", $city: String = "", $access: String = "", $interaction_with_guests: String = "", $video: String = "", $inquire_now_mail_to: String = "") {
   insert_listing(
-    objects: {inquire_now_mail_to: $inquire_now_mail_to, nickname: $nickname, no_of_beds: $no_of_beds, no_of_bathrooms: $no_of_bathrooms, no_of_guests: $no_of_guests, price: $price, rating: $rating, title: $title}
+    objects: {nickname: $nickname, no_of_beds: $no_of_beds, no_of_bathrooms: $no_of_bathrooms, no_of_guests: $no_of_guests, price: $price, rating: $rating, title: $title, transit: $transit, tags: $tags, summary: $summary, state: $state, space: $space, notes: $notes, neighborhood: $neighborhood, house_rules: $house_rules, country: $country, city: $city, access: $access, interaction_with_guests: $interaction_with_guests, video: $video, inquire_now_mail_to: $inquire_now_mail_to}
   ) {
     returning {
       id
@@ -1582,7 +2203,6 @@ export type InsertListingMutationFn = Apollo.MutationFunction<InsertListingMutat
  * @example
  * const [insertListingMutation, { data, loading, error }] = useInsertListingMutation({
  *   variables: {
- *      inquire_now_mail_to: // value for 'inquire_now_mail_to'
  *      nickname: // value for 'nickname'
  *      no_of_beds: // value for 'no_of_beds'
  *      no_of_bathrooms: // value for 'no_of_bathrooms'
@@ -1590,6 +2210,20 @@ export type InsertListingMutationFn = Apollo.MutationFunction<InsertListingMutat
  *      price: // value for 'price'
  *      rating: // value for 'rating'
  *      title: // value for 'title'
+ *      transit: // value for 'transit'
+ *      tags: // value for 'tags'
+ *      summary: // value for 'summary'
+ *      state: // value for 'state'
+ *      space: // value for 'space'
+ *      notes: // value for 'notes'
+ *      neighborhood: // value for 'neighborhood'
+ *      house_rules: // value for 'house_rules'
+ *      country: // value for 'country'
+ *      city: // value for 'city'
+ *      access: // value for 'access'
+ *      interaction_with_guests: // value for 'interaction_with_guests'
+ *      video: // value for 'video'
+ *      inquire_now_mail_to: // value for 'inquire_now_mail_to'
  *   },
  * });
  */
@@ -1862,6 +2496,19 @@ export const ListingByPkDocument = gql`
     rating
     title
     isProd
+    space
+    state
+    summary
+    tags
+    transit
+    updated_at
+    video
+    neighborhood
+    house_rules
+    country
+    city
+    access
+    interaction_with_guests
   }
 }
     `;

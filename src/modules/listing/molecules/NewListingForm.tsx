@@ -29,8 +29,11 @@ import { SuccessDialog } from "./dialogs/listingSuccess";
 import { LoadingSpinner } from "@/components/ui/loading";
 import { uploadToFirebase } from "@/lib/upload";
 import { Route } from "@/routes/listings/new";
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { COUNTRIES_AND_CITIES } from "@/lib/const";
 
 export function NewListingForm() {
   const listing = Route.useLoaderData() as
@@ -45,13 +48,33 @@ export function NewListingForm() {
   const [insertListingImages] = useAddListingImagesMutation();
   const [actionUpdateListing] = useUpdateListingByPkMutation();
   const [actionDeleteListingImages] = useDeleteListingImagesMutation();
+  const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
+
+  console.log("listing", listing);
   // Initialize the form with default values
   const form = useForm<NewListingSchemaType>({
     resolver: zodResolver(NewListingSchema),
-    defaultValues: listing ? { ...listing, images: [] } : { images: [] },
+    defaultValues: listing
+      ? { ...listing,
+        country: listing.country ?? undefined, 
+        city: listing.city ?? undefined ,
+        rating: listing.rating ?? undefined,
+        inquire_now_mail_to: listing.inquire_now_mail_to ?? undefined,
+        summary: listing.summary ?? undefined,
+        access: listing.access ?? undefined,
+        interaction_with_guests: listing.interaction_with_guests ?? undefined,
+        space: listing.space ?? undefined,
+        transit: listing.transit ?? undefined,
+        house_rules: listing.house_rules ?? undefined,
+        neighborhood: listing.neighborhood ?? undefined,
+        tags: listing.tags ?? undefined,
+        nickname: listing.nickname ?? undefined,
+        images: [] }
+      : { images: [] },
   });
 
   function onSubmit(data: NewListingSchemaType) {
+  console.log("Form data", data);
     if (listing) {
       return updateListing(data);
     }
@@ -61,6 +84,7 @@ export function NewListingForm() {
     actionCreateListing({
       variables: {
         ...rest,
+        inquire_now_mail_to: "info@m11collection.com",
       },
       onCompleted: async (data) => {
         if (data) {
@@ -128,6 +152,7 @@ export function NewListingForm() {
         id: listing?.id,
         _set: {
           ...rest,
+          inquire_now_mail_to: "info@m11collection.com",
         },
       },
       onCompleted: async (data) => {
@@ -194,6 +219,15 @@ export function NewListingForm() {
       },
     });
   }
+
+  useEffect(() => {
+    if (listing) {
+      setSelectedCountry(listing.country!);
+    }
+  }
+  , [listing?.country]);
+
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -227,6 +261,74 @@ export function NewListingForm() {
                 <FormDescription>
                   A short nickname for your property.
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="country"
+             render={({ field }) => (
+              <FormItem style={{ width: "100%" }}>
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setSelectedCountry(value);
+                    }}
+                    
+                    value={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a country" />
+                    </SelectTrigger>
+                    <SelectContent >
+                        {Object.keys(COUNTRIES_AND_CITIES)
+                        .sort()
+                        .map((country) => (
+                          <SelectItem key={country} value={country}>
+                          {country}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormDescription>Country of Listing</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>City</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={!selectedCountry}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {selectedCountry &&
+                        COUNTRIES_AND_CITIES[selectedCountry].map((city) => (
+                          <SelectItem key={city} value={city}>
+                            {city}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormDescription>The city of your listing.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -328,8 +430,7 @@ export function NewListingForm() {
             )}
           />
         </div>
-
-        <FormField
+        {/* <FormField
           control={form.control}
           name="inquire_now_mail_to"
           render={({ field }) => (
@@ -348,7 +449,137 @@ export function NewListingForm() {
               <FormMessage />
             </FormItem>
           )}
+        /> */}
+        <div className="grid gap-6 md:grid-cols-2">
+
+        <FormField
+          control={form.control}
+          name="neighborhood"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Neighborhood</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the neighborhood.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
+
+        <FormField
+          control={form.control}
+          name="house_rules"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>House Rules</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the house rules.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="space"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel> Space</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the space.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="transit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel> Transit</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the transit.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="access"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel> Guests Access</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the guests access.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="interaction_with_guests"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel> Interaction with Guests</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the guests interaction.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="summary"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel> Summary</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                A  description of the summary.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        </div>
 
         <FormField
           control={form.control}

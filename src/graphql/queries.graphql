@@ -48,5 +48,19 @@ query listingByPk($id: uuid!) {
     rating
     title
     isProd
+    space
+    state
+    summary
+    tags
+    transit
+    updated_at
+    video
+    neighborhood
+    house_rules
+    country
+    city
+    access
+    interaction_with_guests
   }
 }
+
