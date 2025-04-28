@@ -19,7 +19,7 @@ export const listingCols = [
   }),
   columnHelper.accessor("price", {
     header: "Price",
-    cell: (info) => `$${info.getValue()}`,
+    cell: (info) => `${info.row.original.currency || '$'} ${info.getValue()}`,
   }),
   columnHelper.accessor("rating", {
     header: "Rating",
@@ -70,6 +70,9 @@ export const NewListingSchema = z.object({
   city: z.string().min(2, {
     message: "City must be at least 2 characters.", 
   }),
+  currency: z.string().min(2, {
+    message: 'Currency is required'
+  }),
   country : z.string().min(2, {
     message: "Country must be at least 2 characters.",
   }),
@@ -82,7 +85,7 @@ export const NewListingSchema = z.object({
   neighborhood: z.string().min(2, {
     message: "Neighborhood must be at least 2 characters.",
   }).optional(),
-  tags: z.string().optional(),
+  // tags: z.string().optional(),
   amenities: z.string().optional(),
   nickname: z.string().min(2, {
     message: "Nickname must be at least 2 characters.",

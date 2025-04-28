@@ -16,7 +16,6 @@ mutation insertListing(
   $rating: numeric
   $title: String!
   $transit: String = ""
-  $tags: jsonb = ""
   $summary: String = ""
   $state: String = ""
   $space: String = ""
@@ -29,6 +28,7 @@ mutation insertListing(
   $interaction_with_guests: String = "", 
   $video: String = "",
   $inquire_now_mail_to: String = ""
+  $currency: String = ""
 ) {
   insert_listing(
     objects: {
@@ -40,7 +40,6 @@ mutation insertListing(
       rating: $rating
       title: $title
       transit: $transit
-      tags: $tags
       summary: $summary
       state: $state
       space: $space
@@ -53,6 +52,7 @@ mutation insertListing(
       interaction_with_guests: $interaction_with_guests,
       video: $video
       inquire_now_mail_to: $inquire_now_mail_to
+      currency: $currency
     }
   ) {
     returning {

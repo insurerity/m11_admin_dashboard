@@ -33,7 +33,7 @@ import {  useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { COUNTRIES_AND_CITIES } from "@/lib/const";
+import { COUNTRIES_AND_CITIES, CURRENCY_LIST } from "@/lib/const";
 
 export function NewListingForm() {
   const listing = Route.useLoaderData() as
@@ -67,11 +67,13 @@ export function NewListingForm() {
         transit: listing.transit ?? undefined,
         house_rules: listing.house_rules ?? undefined,
         neighborhood: listing.neighborhood ?? undefined,
-        tags: listing.tags ?? undefined,
         nickname: listing.nickname ?? undefined,
+        currency: listing.currency ?? undefined,
         images: [] }
       : { images: [] },
   });
+
+  console.log(form.formState.errors)
 
   function onSubmit(data: NewListingSchemaType) {
   console.log("Form data", data);
@@ -379,7 +381,36 @@ export function NewListingForm() {
           />
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
+
+        <FormField
+            control={form.control}
+            name="currency"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Currency</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {
+                        CURRENCY_LIST.map((currency) => (
+                          <SelectItem key={currency.code} value={currency.code}>
+                            {currency.code}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="price"

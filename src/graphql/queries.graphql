@@ -8,6 +8,7 @@ query allListings {
     no_of_beds
     no_of_bathrooms
     nickname
+    currency
   }
   totalCount: listing_aggregate {
     aggregate {
@@ -61,6 +62,7 @@ query listingByPk($id: uuid!) {
     city
     access
     interaction_with_guests
+    currency
   }
 }
 

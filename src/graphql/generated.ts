@@ -137,6 +137,7 @@ export type Listing = {
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
+  currency?: Maybe<Scalars['String']['output']>;
   house_rules?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   /** An array relationship */
@@ -244,6 +245,7 @@ export type Listing_Bool_Exp = {
   city?: InputMaybe<String_Comparison_Exp>;
   country?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  currency?: InputMaybe<String_Comparison_Exp>;
   house_rules?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   images?: InputMaybe<Listing_Image_Bool_Exp>;
@@ -518,6 +520,7 @@ export type Listing_Insert_Input = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
   house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   images?: InputMaybe<Listing_Image_Arr_Rel_Insert_Input>;
@@ -549,6 +552,7 @@ export type Listing_Max_Fields = {
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  currency?: Maybe<Scalars['String']['output']>;
   house_rules?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   inquire_now_mail_to?: Maybe<Scalars['String']['output']>;
@@ -577,6 +581,7 @@ export type Listing_Min_Fields = {
   city?: Maybe<Scalars['String']['output']>;
   country?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
+  currency?: Maybe<Scalars['String']['output']>;
   house_rules?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   inquire_now_mail_to?: Maybe<Scalars['String']['output']>;
@@ -620,6 +625,7 @@ export type Listing_Order_By = {
   city?: InputMaybe<Order_By>;
   country?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  currency?: InputMaybe<Order_By>;
   house_rules?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   images_aggregate?: InputMaybe<Listing_Image_Aggregate_Order_By>;
@@ -664,6 +670,8 @@ export enum Listing_Select_Column {
   Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Currency = 'currency',
   /** column name */
   HouseRules = 'house_rules',
   /** column name */
@@ -714,6 +722,7 @@ export type Listing_Set_Input = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
   house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
@@ -781,6 +790,7 @@ export type Listing_Stream_Cursor_Value_Input = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
   house_rules?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
@@ -824,6 +834,8 @@ export enum Listing_Update_Column {
   Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Currency = 'currency',
   /** column name */
   HouseRules = 'house_rules',
   /** column name */
@@ -2075,7 +2087,6 @@ export type InsertListingMutationVariables = Exact<{
   rating?: InputMaybe<Scalars['numeric']['input']>;
   title: Scalars['String']['input'];
   transit?: InputMaybe<Scalars['String']['input']>;
-  tags?: InputMaybe<Scalars['jsonb']['input']>;
   summary?: InputMaybe<Scalars['String']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   space?: InputMaybe<Scalars['String']['input']>;
@@ -2088,6 +2099,7 @@ export type InsertListingMutationVariables = Exact<{
   interaction_with_guests?: InputMaybe<Scalars['String']['input']>;
   video?: InputMaybe<Scalars['String']['input']>;
   inquire_now_mail_to?: InputMaybe<Scalars['String']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -2125,7 +2137,7 @@ export type DeleteListingImagesMutation = { __typename?: 'mutation_root', delete
 export type AllListingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, isProd: boolean, id: any, no_of_beds: any, no_of_bathrooms: any, nickname: string }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
+export type AllListingsQuery = { __typename?: 'query_root', data: Array<{ __typename?: 'listing', price: any, rating: any, title: string, isProd: boolean, id: any, no_of_beds: any, no_of_bathrooms: any, nickname: string, currency?: string | null }>, totalCount: { __typename?: 'listing_aggregate', aggregate?: { __typename?: 'listing_aggregate_fields', count: number } | null } };
 
 export type AllLogsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2137,7 +2149,7 @@ export type ListingByPkQueryVariables = Exact<{
 }>;
 
 
-export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, isProd: boolean, space?: string | null, state?: string | null, summary?: string | null, tags?: any | null, transit?: string | null, updated_at: any, video?: string | null, neighborhood?: string | null, house_rules?: string | null, country?: string | null, city?: string | null, access?: string | null, interaction_with_guests?: string | null, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
+export type ListingByPkQuery = { __typename?: 'query_root', listing_by_pk?: { __typename?: 'listing', created_at: any, id: any, inquire_now_mail_to: string, nickname: string, no_of_bathrooms: any, no_of_beds: any, no_of_guests: any, price: any, rating: any, title: string, isProd: boolean, space?: string | null, state?: string | null, summary?: string | null, tags?: any | null, transit?: string | null, updated_at: any, video?: string | null, neighborhood?: string | null, house_rules?: string | null, country?: string | null, city?: string | null, access?: string | null, interaction_with_guests?: string | null, currency?: string | null, images: Array<{ __typename?: 'listing_image', id: any, url: string }> } | null };
 
 
 export const CreateListingWithImagesDocument = gql`
@@ -2177,9 +2189,9 @@ export type CreateListingWithImagesMutationHookResult = ReturnType<typeof useCre
 export type CreateListingWithImagesMutationResult = Apollo.MutationResult<CreateListingWithImagesMutation>;
 export type CreateListingWithImagesMutationOptions = Apollo.BaseMutationOptions<CreateListingWithImagesMutation, CreateListingWithImagesMutationVariables>;
 export const InsertListingDocument = gql`
-    mutation insertListing($nickname: String!, $no_of_beds: numeric!, $no_of_bathrooms: numeric!, $no_of_guests: numeric!, $price: numeric!, $rating: numeric, $title: String!, $transit: String = "", $tags: jsonb = "", $summary: String = "", $state: String = "", $space: String = "", $notes: String = "", $neighborhood: String = "", $house_rules: String = "", $country: String = "", $city: String = "", $access: String = "", $interaction_with_guests: String = "", $video: String = "", $inquire_now_mail_to: String = "") {
+    mutation insertListing($nickname: String!, $no_of_beds: numeric!, $no_of_bathrooms: numeric!, $no_of_guests: numeric!, $price: numeric!, $rating: numeric, $title: String!, $transit: String = "", $summary: String = "", $state: String = "", $space: String = "", $notes: String = "", $neighborhood: String = "", $house_rules: String = "", $country: String = "", $city: String = "", $access: String = "", $interaction_with_guests: String = "", $video: String = "", $inquire_now_mail_to: String = "", $currency: String = "") {
   insert_listing(
-    objects: {nickname: $nickname, no_of_beds: $no_of_beds, no_of_bathrooms: $no_of_bathrooms, no_of_guests: $no_of_guests, price: $price, rating: $rating, title: $title, transit: $transit, tags: $tags, summary: $summary, state: $state, space: $space, notes: $notes, neighborhood: $neighborhood, house_rules: $house_rules, country: $country, city: $city, access: $access, interaction_with_guests: $interaction_with_guests, video: $video, inquire_now_mail_to: $inquire_now_mail_to}
+    objects: {nickname: $nickname, no_of_beds: $no_of_beds, no_of_bathrooms: $no_of_bathrooms, no_of_guests: $no_of_guests, price: $price, rating: $rating, title: $title, transit: $transit, summary: $summary, state: $state, space: $space, notes: $notes, neighborhood: $neighborhood, house_rules: $house_rules, country: $country, city: $city, access: $access, interaction_with_guests: $interaction_with_guests, video: $video, inquire_now_mail_to: $inquire_now_mail_to, currency: $currency}
   ) {
     returning {
       id
@@ -2211,7 +2223,6 @@ export type InsertListingMutationFn = Apollo.MutationFunction<InsertListingMutat
  *      rating: // value for 'rating'
  *      title: // value for 'title'
  *      transit: // value for 'transit'
- *      tags: // value for 'tags'
  *      summary: // value for 'summary'
  *      state: // value for 'state'
  *      space: // value for 'space'
@@ -2224,6 +2235,7 @@ export type InsertListingMutationFn = Apollo.MutationFunction<InsertListingMutat
  *      interaction_with_guests: // value for 'interaction_with_guests'
  *      video: // value for 'video'
  *      inquire_now_mail_to: // value for 'inquire_now_mail_to'
+ *      currency: // value for 'currency'
  *   },
  * });
  */
@@ -2384,6 +2396,7 @@ export const AllListingsDocument = gql`
     no_of_beds
     no_of_bathrooms
     nickname
+    currency
   }
   totalCount: listing_aggregate {
     aggregate {
@@ -2509,6 +2522,7 @@ export const ListingByPkDocument = gql`
     city
     access
     interaction_with_guests
+    currency
   }
 }
     `;

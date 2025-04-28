@@ -125,8 +125,12 @@ export default function ListingDetailsTemplate() {
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-500">Currency</p>
+              <p className="font-medium">{listing?.currency!}</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-sm text-gray-500">Price</p>
-              <p className="font-medium">${listing?.price.toLocaleString()}</p>
+              <p className="font-medium">{listing?.price.toLocaleString()}</p>
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg flex items-center gap-2">

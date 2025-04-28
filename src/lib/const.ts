@@ -1,4 +1,40 @@
 
+
+
+export const CURRENCY_LIST = [
+  { code: "USD", name: "United States Dollar", symbol: "$" },
+  { code: "EUR", name: "Euro", symbol: "€" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "C$" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
+  { code: "ILS", name: "Israeli New Shekel", symbol: "₪" },
+  { code: "GBP", name: "British Pound Sterling", symbol: "£" },
+  { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$" },
+  { code: "NOK", name: "Norwegian Krone", symbol: "kr" },
+  { code: "CZK", name: "Czech Koruna", symbol: "Kč" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
+  { code: "THB", name: "Thai Baht", symbol: "฿" },
+  { code: "ZAR", name: "South African Rand", symbol: "R" },
+  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM" },
+  { code: "KRW", name: "South Korean Won", symbol: "₩" },
+  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp" },
+  { code: "PHP", name: "Philippine Peso", symbol: "₱" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹" },
+  { code: "NZD", name: "New Zealand Dollar", symbol: "NZ$" },
+  { code: "TWD", name: "New Taiwan Dollar", symbol: "NT$" },
+  { code: "PLN", name: "Polish Zloty", symbol: "zł" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
+  { code: "TRY", name: "Turkish Lira", symbol: "₺" },
+  { code: "SEK", name: "Swedish Krona", symbol: "kr" },
+  { code: "VND", name: "Vietnamese Dong", symbol: "₫" },
+  { code: "ARS", name: "Argentine Peso", symbol: "$" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
+  { code: "DKK", name: "Danish Krone", symbol: "kr" },
+  { code: "MXN", name: "Mexican Peso", symbol: "$" }
+];
+
+
+
 export const COUNTRIES_AND_CITIES: {
     [key: string]: string[];
   } = {
